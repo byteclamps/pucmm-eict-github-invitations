@@ -16,20 +16,32 @@
 
 package edu.pucmm.pucmmeictgithubinvitations.controllers;
 
+import edu.pucmm.pucmmeictgithubinvitations.properties.PucmmProperties;
 import edu.pucmm.pucmmeictgithubinvitations.service.GithubInvitationService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
+
+import java.util.Map;
 
 @RestController
 @Slf4j
 @RequiredArgsConstructor
+@RequestMapping(path = "/github-invitations")
 public class GithubInvitationController {
     private final GithubInvitationService githubInvitationService;
+    private final PucmmProperties properties;
+
+    @GetMapping(path = "/available-subjects")
+    @ResponseStatus(HttpStatus.OK)
+    public Map<String, String> getAvailableSubjects() {
+        return properties.getAvailableSubjects();
+    }
 
     @GetMapping(path = "/{subject}/{githubUser}")
     @ResponseStatus(HttpStatus.ACCEPTED)
