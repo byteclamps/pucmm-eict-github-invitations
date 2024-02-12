@@ -43,15 +43,17 @@ public class GithubInvitationController {
         return properties.getAvailableSubjects();
     }
 
-    @GetMapping(path = "/{subject}/{githubUser}")
+    @GetMapping(path = "/{email}/{subject}/{githubUser}")
     @ResponseStatus(HttpStatus.ACCEPTED)
     public void requestInvitation(
+            @PathVariable("email") final String email,
             @PathVariable("subject") final String subject,
             @PathVariable("githubUser") final String githubUser
     ) {
+        log.debug("email: {}", email);
         log.debug("subject: {}", subject);
         log.debug("githubUser: {}", githubUser);
 
-        githubInvitationService.processInvitation(subject, githubUser);
+        githubInvitationService.processInvitation(email, subject, githubUser);
     }
 }

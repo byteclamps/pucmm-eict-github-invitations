@@ -23,9 +23,14 @@ import edu.pucmm.pucmmeictgithubinvitations.validators.SupportedSubject;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.io.FileUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.validation.annotation.Validated;
 
+import java.io.File;
+import java.io.IOException;
+import java.nio.charset.Charset;
+import java.util.HashSet;
 import java.util.Objects;
 
 @Service
@@ -36,10 +41,12 @@ public class GithubInvitationService {
     private final PucmmProperties pucmmProperties;
     private final GithubFeign githubFeign;
 
-    public void processInvitation(@Valid @SupportedSubject final String subject, final String githubUser) {
+    public void processInvitation(final String email, @Valid @SupportedSubject final String subject, final String githubUser) {
         var org = pucmmProperties.getGithubOrg();
         var foundTeam = pucmmProperties.getCurrentTeams().get(subject);
         var dto = GithubInvitationDTO.builder().role("member").build();
+
+        validateEmail(email, subject);
 
         log.debug("org: {}", org);
         log.debug("foundTeam: {}", foundTeam);
@@ -57,6 +64,20 @@ public class GithubInvitationService {
             }
         } else {
             throw new RuntimeException("There has been an error while trying to send the invitation...");
+        }
+    }
+
+    private void validateEmail(final String email, final String subject) {
+        try {
+            var resource = String.format(".subjects/%s/.valid-emails", subject); // TODO: Change this for home directory hidden
+
+            var validEmails = new HashSet<>(FileUtils.readLines(new File(resource), Charset.defaultCharset()));
+
+            if (validEmails.stream().noneMatch(s -> s.equalsIgnoreCase(email))) {
+                throw new RuntimeException(String.format("The email '%s' is not valid. Please refer to the reviser for more information.", email));
+            }
+        } catch (IOException e) {
+            throw new RuntimeException(e);
         }
     }
 }
