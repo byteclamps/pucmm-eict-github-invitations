@@ -1,0 +1,34 @@
+pucmm:
+  github-org: ${PUCMM_GITHUB_ORGANIZATION}
+  available-subjects:
+    st-icc-352: 'Programacion Web'
+    st-icc-354: 'Programacion Web Avanzada'
+  current-teams:
+    st-icc-352: ${PROGRAMACION_WEB_TEAM}
+    st-icc-354: ${PROGRAMACION_WEB_AVANZADA_TEAM}
+
+debug: on
+
+logging:
+  level:
+    edu:
+      pucmm: ${LOG_LEVEL_EDU_PUCMM:info}
+
+spring:
+  application:
+    name: Pucmm Github Invitations
+    admin:
+      enabled: false
+  cloud:
+    openfeign:
+      client:
+        config:
+          default:
+            default-request-headers:
+              Authorization:
+                - Bearer ${GITHUB_TOKEN}
+              Accept:
+                - application/vnd.github+json
+              X-GitHub-Api-Version:
+                - 2022-11-28
+
