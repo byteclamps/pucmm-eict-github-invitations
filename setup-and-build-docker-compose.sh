@@ -21,4 +21,4 @@ docker network rm pucmm_eict_github_invitations
 docker network create pucmm_eict_github_invitations
 docker container rm pucmm-eict-github-invitations -v
 docker-compose down -v
-docker-compose up --build
+docker-compose up --build -d
