@@ -4,6 +4,7 @@ ENV MAVEN_OPTS="-XX:+TieredCompilation -XX:TieredStopAtLevel=1"
 WORKDIR /app
 
 COPY . .
+COPY .subjects ~/.subjects
 
 RUN mvn clean install
 
@@ -17,7 +18,6 @@ RUN mkdir -p ~/.subjects/st-icc-354/
 
 COPY --from=builder /app/target/*.jar /app/app.jar
 
-COPY --from=builder /app/.valid-emails-352 /root/.subjects/st-icc-352/.valid-emails
-COPY --from=builder /app/.valid-emails-354 /root/.subjects/st-icc-354/.valid-emails
+COPY --from=builder /app/.subjects ~/.subjects
 
 ENTRYPOINT ["java", "-jar", "app.jar"]

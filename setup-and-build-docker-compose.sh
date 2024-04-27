@@ -14,5 +14,11 @@
 #    limitations under the License.
 #
 
-distributionUrl=https://repo.maven.apache.org/maven2/org/apache/maven/apache-maven/3.9.5/apache-maven-3.9.5-bin.zip
-wrapperUrl=https://repo.maven.apache.org/maven2/org/apache/maven/wrapper/maven-wrapper/3.2.0/maven-wrapper-3.2.0.jar
+clear
+
+cp -r ~/.subjects .
+docker network rm pucmm_eict_github_invitations
+docker network create pucmm_eict_github_invitations
+docker container rm pucmm-eict-github-invitations -v
+docker-compose down -v
+docker-compose up --build
