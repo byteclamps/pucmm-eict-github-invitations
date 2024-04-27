@@ -27,7 +27,7 @@ import java.lang.annotation.Target;
 
 @Documented
 @Constraint(validatedBy = SupportedSubjectValidator.class)
-@Target({ElementType.METHOD, ElementType.PARAMETER})
+@Target({ElementType.FIELD, ElementType.METHOD, ElementType.PARAMETER})
 @Retention(RetentionPolicy.RUNTIME)
 public @interface SupportedSubject {
     String message() default "Subject '${validatedValue}' either is not valid or not supported.";

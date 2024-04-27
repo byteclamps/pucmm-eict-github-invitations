@@ -33,7 +33,7 @@ import java.util.stream.Collectors;
 @Slf4j
 @RequiredArgsConstructor
 public class ExceptionController {
-    private static final String README_ENDPOINT = "/github-invitation-manual.html";
+    private static final String README_ENDPOINT = "/index.ftl";
 
     @ExceptionHandler(Exception.class)
     public ExceptionDTO handlingGenericException(Exception exception) {

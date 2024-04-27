@@ -13,9 +13,3 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
-(async function () {
-    let availableSubjects = await fetch("/github-invitations/available-subjects");
-    let availableSubjectJsonData = await availableSubjects.json();
-    
-})();

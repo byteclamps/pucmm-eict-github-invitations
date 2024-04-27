@@ -7,18 +7,31 @@ pucmm:
     st-icc-352: ${PROGRAMACION_WEB_TEAM}
     st-icc-354: ${PROGRAMACION_WEB_AVANZADA_TEAM}
 
-debug: on
+debug: off
 
 logging:
   level:
     edu:
       pucmm: ${LOG_LEVEL_EDU_PUCMM:info}
 
+server:
+  port: ${SERVER_PORT:8080}
+
 spring:
   application:
     name: Pucmm Github Invitations
     admin:
       enabled: false
+  web:
+    resources:
+      static-locations: classpath:/static/
+  profiles:
+    active: ${SPRING_PROFILE:local}
+    default: local
+  freemarker:
+    charset: UTF-8
+    content-type: text/html
+    suffix: .ftl
   cloud:
     openfeign:
       client:

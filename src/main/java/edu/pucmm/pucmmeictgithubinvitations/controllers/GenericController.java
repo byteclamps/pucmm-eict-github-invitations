@@ -16,19 +16,52 @@
 
 package edu.pucmm.pucmmeictgithubinvitations.controllers;
 
+import edu.pucmm.pucmmeictgithubinvitations.dto.RequestBodyDTO;
+import edu.pucmm.pucmmeictgithubinvitations.properties.PucmmProperties;
+import edu.pucmm.pucmmeictgithubinvitations.service.GithubInvitationService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.view.RedirectView;
 
 @Controller
 @Slf4j
 @RequiredArgsConstructor
 public class GenericController {
+    private final PucmmProperties pucmmProperties;
+    private final GithubInvitationService githubInvitationService;
+
+    @PostMapping(path = "/", consumes = {MediaType.APPLICATION_FORM_URLENCODED_VALUE})
+    @ResponseStatus(HttpStatus.ACCEPTED)
+    public ModelAndView requestInvitation(RequestBodyDTO dto, Model model) {
+        log.debug("dto: {}", dto.toString());
+
+        model.addAttribute("subjects", pucmmProperties.getAvailableSubjects());
+
+        try {
+            githubInvitationService.processInvitation(dto);
+
+            model.addAttribute("success", true);
+            model.addAttribute("message", String.format("Invitation has been sent. Please check your email '%s'.", dto.getEmail().substring(0, 5) + "**********" + dto.getEmail().substring(dto.getEmail().length() - 5)));
+        } catch (Exception e) {
+            model.addAttribute("success", false);
+            model.addAttribute("message", e.getMessage());
+
+            log.error(e.getMessage(), e);
+        }
+
+        return new ModelAndView("index");
+    }
+
     @RequestMapping(path = "/", method = RequestMethod.GET)
-    public RedirectView redirectToManual() {
-        return new RedirectView("/github-invitation-manual.html");
+    public ModelAndView index(Model model) {
+        model.addAttribute("subjects", pucmmProperties.getAvailableSubjects());
+
+        return new ModelAndView("index");
     }
 }

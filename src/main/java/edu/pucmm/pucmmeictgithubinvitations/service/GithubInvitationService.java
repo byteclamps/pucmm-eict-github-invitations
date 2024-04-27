@@ -17,9 +17,9 @@
 package edu.pucmm.pucmmeictgithubinvitations.service;
 
 import edu.pucmm.pucmmeictgithubinvitations.dto.GithubInvitationDTO;
+import edu.pucmm.pucmmeictgithubinvitations.dto.RequestBodyDTO;
 import edu.pucmm.pucmmeictgithubinvitations.feign.GithubFeign;
 import edu.pucmm.pucmmeictgithubinvitations.properties.PucmmProperties;
-import edu.pucmm.pucmmeictgithubinvitations.validators.SupportedSubject;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -41,20 +41,21 @@ public class GithubInvitationService {
     private final PucmmProperties pucmmProperties;
     private final GithubFeign githubFeign;
 
-    public void processInvitation(final String email, @Valid @SupportedSubject final String subject, final String githubUser) {
+    public void processInvitation(final @Valid RequestBodyDTO dto) {
         var org = pucmmProperties.getGithubOrg();
-        var foundTeam = pucmmProperties.getCurrentTeams().get(subject);
-        var dto = GithubInvitationDTO.builder().role("member").build();
+        var foundTeam = pucmmProperties.getCurrentTeams().get(dto.getSubject());
+        var githubDto = GithubInvitationDTO.builder().role("member").build();
 
-        validateEmail(email, subject);
+        validateEmail(dto.getEmail(), dto.getSubject());
 
         log.debug("org: {}", org);
         log.debug("foundTeam: {}", foundTeam);
+        log.debug("githubDto: {}", githubDto);
         log.debug("dto: {}", dto);
 
-        if (Objects.nonNull(foundTeam) && Objects.nonNull(githubUser)) {
+        if (Objects.nonNull(foundTeam) && Objects.nonNull(dto.getGithubUser())) {
             try {
-                githubFeign.addOrUpdateMemberInvitation(org, foundTeam, githubUser, dto);
+                githubFeign.addOrUpdateMemberInvitation(org, foundTeam, dto.getGithubUser(), githubDto);
             } catch (Exception e) {
                 var message = "There has been an error while sending the request to github...";
 
@@ -69,7 +70,7 @@ public class GithubInvitationService {
 
     private void validateEmail(final String email, final String subject) {
         try {
-            var resource = String.format(".subjects/%s/.valid-emails", subject); // TODO: Change this for home directory hidden
+            var resource = String.format("%s/.subjects/%s/.valid-emails", System.getProperty("user.home"), subject);
 
             var validEmails = new HashSet<>(FileUtils.readLines(new File(resource), Charset.defaultCharset()));
 

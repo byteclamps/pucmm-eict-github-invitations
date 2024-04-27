@@ -1,0 +1,18 @@
+version: '3.8'
+
+services:
+  app:
+    build:
+      dockerfile: Dockerfile
+      context: .
+    ports:
+      - "8089:8080"
+    env_file:
+      - .env
+    networks:
+      pucmm_eict_github_invitations:
+
+networks:
+  pucmm_eict_github_invitations:
+    driver: bridge
+
