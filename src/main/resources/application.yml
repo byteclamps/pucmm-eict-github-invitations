@@ -1,3 +1,4 @@
+
 pucmm:
   github-org: ${PUCMM_GITHUB_ORGANIZATION}
   available-subjects:
@@ -7,7 +8,7 @@ pucmm:
     st-icc-352: ${PROGRAMACION_WEB_TEAM}
     st-icc-354: ${PROGRAMACION_WEB_AVANZADA_TEAM}
 
-debug: off
+debug: true
 
 logging:
   level:

@@ -17,18 +17,32 @@
 package edu.pucmm.pucmmeictgithubinvitations.dto;
 
 import edu.pucmm.pucmmeictgithubinvitations.validators.SupportedSubject;
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
+import org.hibernate.validator.constraints.Length;
 
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 @ToString
 public class RequestBodyDTO {
+    @NotNull(message = "The email is required")
+    @NotEmpty(message = "The email cannot be empty")
+    @Length(max = 64, message = "The email cannot exceed 64 characters")
+    @Email(message = "The email is not valid")
     private String email;
     @SupportedSubject
+    @NotNull(message = "The subject is required")
+    @NotEmpty(message = "The subject cannot be empty")
+    @Length(max = 64, message = "The subject cannot exceed 64 characters")
     private String subject;
+    @NotNull(message = "The github-user is required")
+    @NotEmpty(message = "The github-user cannot be empty")
+    @Length(max = 64, message = "The github-user cannot exceed 64 characters")
     private String githubUser;
 }

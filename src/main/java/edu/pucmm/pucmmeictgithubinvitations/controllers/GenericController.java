@@ -19,22 +19,31 @@ package edu.pucmm.pucmmeictgithubinvitations.controllers;
 import edu.pucmm.pucmmeictgithubinvitations.dto.RequestBodyDTO;
 import edu.pucmm.pucmmeictgithubinvitations.properties.PucmmProperties;
 import edu.pucmm.pucmmeictgithubinvitations.service.GithubInvitationService;
-import lombok.RequiredArgsConstructor;
+import jakarta.validation.ConstraintViolation;
+import jakarta.validation.ConstraintViolationException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.servlet.ModelAndView;
-import org.springframework.web.servlet.view.RedirectView;
+
+import java.util.stream.Collectors;
 
 @Controller
 @Slf4j
-@RequiredArgsConstructor
 public class GenericController {
     private final PucmmProperties pucmmProperties;
     private final GithubInvitationService githubInvitationService;
+
+    public GenericController(PucmmProperties pucmmProperties, GithubInvitationService githubInvitationService) {
+        this.pucmmProperties = pucmmProperties;
+        this.githubInvitationService = githubInvitationService;
+    }
 
     @PostMapping(path = "/", consumes = {MediaType.APPLICATION_FORM_URLENCODED_VALUE})
     @ResponseStatus(HttpStatus.ACCEPTED)
@@ -48,6 +57,11 @@ public class GenericController {
 
             model.addAttribute("success", true);
             model.addAttribute("message", String.format("Invitation has been sent. Please check your email '%s'.", dto.getEmail().substring(0, 5) + "**********" + dto.getEmail().substring(dto.getEmail().length() - 5)));
+        } catch (ConstraintViolationException e) {
+            model.addAttribute("success", false);
+            model.addAttribute("message", e.getConstraintViolations().stream().map(ConstraintViolation::getMessage).collect(Collectors.joining("<br>")));
+
+            log.error(e.getMessage(), e);
         } catch (Exception e) {
             model.addAttribute("success", false);
             model.addAttribute("message", e.getMessage());

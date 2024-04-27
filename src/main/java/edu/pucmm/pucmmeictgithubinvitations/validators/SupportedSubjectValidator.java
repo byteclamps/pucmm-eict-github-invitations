@@ -21,6 +21,7 @@ import jakarta.validation.ConstraintValidator;
 import jakarta.validation.ConstraintValidatorContext;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Component;
 
 @Component
@@ -32,6 +33,10 @@ public class SupportedSubjectValidator implements ConstraintValidator<SupportedS
     @Override
     public boolean isValid(String s, ConstraintValidatorContext constraintValidatorContext) {
         log.info("Validating subject '{}'...", s);
+
+        if (StringUtils.isEmpty(s)) {
+            return true;
+        }
 
         return pucmmProperties.getAvailableSubjects().get(s) != null;
     }
