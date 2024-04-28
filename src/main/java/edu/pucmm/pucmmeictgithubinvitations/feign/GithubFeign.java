@@ -16,7 +16,7 @@
 
 package edu.pucmm.pucmmeictgithubinvitations.feign;
 
-import edu.pucmm.pucmmeictgithubinvitations.configuration.FeignConfiguration;
+import edu.pucmm.pucmmeictgithubinvitations.configuration.GithubFeignConfiguration;
 import edu.pucmm.pucmmeictgithubinvitations.dto.GithubInvitationDTO;
 import lombok.NonNull;
 import org.springframework.cloud.openfeign.FeignClient;
@@ -25,7 +25,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
-@FeignClient(value = "githubFeign", url = "https://api.github.com", configuration = FeignConfiguration.class)
+@FeignClient(value = "github-feign", url = "https://api.github.com", configuration = GithubFeignConfiguration.class)
 public interface GithubFeign {
     @RequestMapping(path = "/orgs/{org}/teams/{team}/memberships/{username}", method = RequestMethod.PUT)
     void addOrUpdateMemberInvitation(

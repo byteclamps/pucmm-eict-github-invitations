@@ -16,14 +16,24 @@
 
 package edu.pucmm.pucmmeictgithubinvitations.configuration;
 
+import edu.pucmm.pucmmeictgithubinvitations.interceptors.GithubRequestInterceptor;
 import feign.Logger;
+import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 @Configuration
-public class FeignConfiguration {
+@RequiredArgsConstructor
+public class GithubFeignConfiguration {
+    private final GithubRequestInterceptor githubRequestInterceptor;
+
     @Bean
     Logger.Level feignLoggerLevel() {
         return Logger.Level.FULL;
+    }
+
+    @Bean
+    public GithubRequestInterceptor requestInterceptor() {
+        return githubRequestInterceptor;
     }
 }

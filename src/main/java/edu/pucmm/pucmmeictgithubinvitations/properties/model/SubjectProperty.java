@@ -23,4 +23,5 @@ public class SubjectProperty {
     private String name;
     private String githubTeam;
     private String googleSpreadSheetId;
+    private String pvaCurrentId;
 }

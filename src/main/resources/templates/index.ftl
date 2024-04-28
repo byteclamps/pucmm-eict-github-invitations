@@ -24,18 +24,18 @@
     <script src="https://cdn.tailwindcss.com"></script>
 </head>
 <body>
-<div class="m-10">
+<div class="bg-white flex-col flex items-center m-10">
     <div class="flex flex-row justify-center w-full">
         <div>
-            <img class="object-center object-top" width="500px" src="/images/github.png" alt="Github">
+            <img class="object-center object-top" width="300px" src="/images/github.png" alt="Github Logo">
         </div>
         <div>
-            <img class="object-center object-top" width="500px" src="/images/logo-pucmm.png" alt="Github">
+            <img class="object-center object-top" width="300px" src="/images/logo-pucmm.png" alt="Pucmm Logo">
         </div>
     </div>
     <h1 class="text-center mb-4 text-4xl font-extrabold leading-none tracking-tight text-gray-900 md:text-5xl lg:text-6xl dark:text-black">PUCMM EICT GITHUB INVITATIONS</h1>
     <p class="text-center mb-6 text-lg font-normal text-gray-500 lg:text-xl sm:px-16 xl:px-48 dark:text-gray-600">Application for self-inviting into github subject's team.</p>
-    <form class="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4 m-10" id="github-form" method="post" action="/">
+    <form class="shadow-md rounded px-8 pt-6 pb-8 mb-4 m-10 w-1/2" id="github-form" method="post" action="/">
         <div class="mb-4">
             <label class="block text-gray-700 text-sm font-bold mb-2" for="subject">
                 Materia
