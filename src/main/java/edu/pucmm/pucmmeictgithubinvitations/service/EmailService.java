@@ -16,9 +16,7 @@
 
 package edu.pucmm.pucmmeictgithubinvitations.service;
 
-import edu.pucmm.pucmmeictgithubinvitations.dto.RequestBodyDTO;
 import edu.pucmm.pucmmeictgithubinvitations.model.Student;
-import edu.pucmm.pucmmeictgithubinvitations.properties.model.SubjectProperty;
 import io.pebbletemplates.pebble.PebbleEngine;
 import io.pebbletemplates.pebble.template.PebbleTemplate;
 import jakarta.mail.Message;
@@ -70,16 +68,16 @@ public class EmailService {
         }
     }
 
-    public void sendEmailNotification(final RequestBodyDTO dto, final Student student, final SubjectProperty subjectProperty) {
+    public void sendEmailNotification(final Student student) {
         PebbleEngine engine = new PebbleEngine.Builder().build();
         PebbleTemplate compiledTemplate = engine.getTemplate("templates/pebble/notification.peb.html");
 
         Writer writer = new StringWriter();
         Map<String, Object> context = new HashMap<>();
-        context.put("subject", dto.getSubject());
-        context.put("githubUsername", dto.getGithubUser());
-        context.put("email", dto.getEmail());
-        context.put("spreadsheetId", subjectProperty.getGoogleSpreadSheetId());
+        context.put("subject", student.getSubjectName());
+        context.put("githubUsername", student.getGithubUsername());
+        context.put("email", student.getEmail());
+        context.put("spreadsheetId", student.getSpreadsheetId());
         context.put("studentFullName", student.getFullName());
 
         try {

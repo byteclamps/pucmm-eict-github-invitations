@@ -16,6 +16,7 @@
 
 package edu.pucmm.pucmmeictgithubinvitations.dto;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
 import edu.pucmm.pucmmeictgithubinvitations.validators.SupportedSubject;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotEmpty;
@@ -27,7 +28,6 @@ import lombok.ToString;
 import org.hibernate.validator.constraints.Length;
 
 @Data
-@AllArgsConstructor
 @NoArgsConstructor
 @ToString
 public class RequestBodyDTO {
@@ -45,4 +45,11 @@ public class RequestBodyDTO {
     @NotEmpty(message = "The github-user cannot be empty")
     @Length(max = 64, message = "The github-user cannot exceed 64 characters")
     private String githubUser;
+
+    @JsonCreator
+    public RequestBodyDTO(String email, String subject, String githubUser) {
+        this.email = email.trim().toLowerCase();
+        this.subject = subject.trim().toLowerCase();
+        this.githubUser = githubUser.trim();
+    }
 }

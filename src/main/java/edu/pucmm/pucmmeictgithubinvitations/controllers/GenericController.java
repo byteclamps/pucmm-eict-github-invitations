@@ -63,22 +63,19 @@ public class GenericController {
 
                 model.addAttribute("success", true);
 
-                stringBuilder.setLength(0);
-                stringBuilder.append(String.format("Invitation has been sent. Please check your email '%s'.", dto.getEmail().substring(0, 5) + "**********" + dto.getEmail().substring(dto.getEmail().length() - 5)));
+                stringBuilder.append(String.format("Invitation has been sent. Please check your email '%s'.", student.getEmail().substring(0, 5) + "**********" + student.getEmail().substring(student.getEmail().length() - 5)));
 
-                emailService.sendEmailNotification(dto, student, pucmmProperties.getSubjects().get(dto.getSubject()));
+                emailService.sendEmailNotification(student);
             });
         } catch (ConstraintViolationException e) {
             model.addAttribute("success", false);
 
-            stringBuilder.setLength(0);
             stringBuilder.append(e.getConstraintViolations().stream().map(ConstraintViolation::getMessage).collect(Collectors.joining("<br>")));
 
             log.error(e.getMessage(), e);
         } catch (Exception e) {
             model.addAttribute("success", false);
 
-            stringBuilder.setLength(0);
             stringBuilder.append(e.getMessage());
 
             log.error(e.getMessage(), e);

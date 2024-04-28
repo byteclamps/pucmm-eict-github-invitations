@@ -24,4 +24,8 @@ import lombok.Data;
 public class Student {
     private String email;
     private String fullName;
+    private String subjectName;
+    private String subjectId;
+    private String githubUsername;
+    private String spreadsheetId;
 }
