@@ -14,14 +14,14 @@
  *    limitations under the License.
  */
 
-document.addEventListener("DOMContentLoaded", () => {
+$(document).ready(() => {
     setTimeout(() => {
         try {
-            document.getElementsByClassName("error-alert-message")[0].remove();
+            $(".error-alert-message").remove();
         } catch (e) {}
 
         try {
-            document.getElementsByClassName("success-alert-message")[0].remove();
+            $(".success-alert-message").remove();
         } catch (e) {}
     }, 5000);
 });

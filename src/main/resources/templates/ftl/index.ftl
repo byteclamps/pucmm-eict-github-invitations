@@ -21,21 +21,24 @@
     <meta content="width=device-width, initial-scale=1.0" name="viewport">
     <meta content="ie=edge" http-equiv="X-UA-Compatible">
     <title>Pucmm EICT Github Invitations</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap" rel="stylesheet">
     <script src="https://cdn.tailwindcss.com"></script>
 </head>
-<body>
-<div class="bg-white flex-col flex items-center m-10">
+<body class="bg-gray-100">
+<div class="flex-col flex items-center m-10">
     <div class="flex flex-row justify-center w-full">
         <div>
-            <img class="object-center object-top" width="300px" src="/images/github.png" alt="Github Logo">
+            <img class="object-center object-top" width="200px" src="/images/github.png" alt="Github Logo">
         </div>
         <div>
-            <img class="object-center object-top" width="300px" src="/images/logo-pucmm.png" alt="Pucmm Logo">
+            <img class="object-center object-top" width="200px" src="/images/logo-pucmm.png" alt="Pucmm Logo">
         </div>
     </div>
     <h1 class="text-center mb-4 text-4xl font-extrabold leading-none tracking-tight text-gray-900 md:text-5xl lg:text-6xl dark:text-black">PUCMM EICT GITHUB INVITATIONS</h1>
     <p class="text-center mb-6 text-lg font-normal text-gray-500 lg:text-xl sm:px-16 xl:px-48 dark:text-gray-600">Application for self-inviting into github subject's team.</p>
-    <form class="shadow-md rounded px-8 pt-6 pb-8 mb-4 m-10 w-1/2" id="github-form" method="post" action="/">
+    <form class="shadow-md rounded px-8 pt-6 pb-8 mb-4 m-10 w-1/2 bg-white" id="github-form" method="post" action="/">
         <div class="mb-4">
             <label class="block text-gray-700 text-sm font-bold mb-2" for="subject">
                 Materia
@@ -51,13 +54,13 @@
             <label class="block text-gray-700 text-sm font-bold mb-2" for="username">
                 Usuario (Github)
             </label>
-            <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" type="text" id="githubUser" name="githubUser" placeholder="username"/>
+            <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" type="text" id="githubUser" name="githubUser" placeholder="Your github valid username"/>
         </div>
         <div class="mb-4">
             <label class="block text-gray-700 text-sm font-bold mb-2" for="email">
                 Correo Electronico
             </label>
-            <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" type="text" id="email" name="email" placeholder="email"/>
+            <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" type="text" id="email" name="email" placeholder="Your institution email (*****@ce.pucmm.edu.do)"/>
         </div>
         <#if success?? && !success>
             <div role="alert" class="error-alert-message">
@@ -87,7 +90,10 @@
             </button>
         </div>
     </form>
+    <hr class="my-6 border-gray-200 sm:mx-auto dark:border-gray-700 lg:my-8" />
+    <span class="block text-sm text-gray-500 sm:text-center dark:text-gray-400">© ${currentYear} <a href="https://ghencon.com/" class="hover:underline">Ghencon™</a>. All Rights Reserved.</span>
 </div>
 </body>
+<script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
 <script src="/static/js/index.js"></script>
 </html>

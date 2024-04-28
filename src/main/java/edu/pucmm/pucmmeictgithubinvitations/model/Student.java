@@ -14,20 +14,14 @@
  *    limitations under the License.
  */
 
-package edu.pucmm.pucmmeictgithubinvitations;
+package edu.pucmm.pucmmeictgithubinvitations.model;
 
-import org.springframework.boot.SpringApplication;
-import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.cache.annotation.EnableCaching;
-import org.springframework.cloud.openfeign.EnableFeignClients;
-import org.springframework.scheduling.annotation.EnableScheduling;
+import lombok.Builder;
+import lombok.Data;
 
-@SpringBootApplication
-@EnableFeignClients
-@EnableCaching
-@EnableScheduling
-public class PucmmEictGithubInvitationsApplication {
-    public static void main(String[] args) {
-        SpringApplication.run(PucmmEictGithubInvitationsApplication.class, args);
-    }
+@Data
+@Builder
+public class Student {
+    private String email;
+    private String fullName;
 }

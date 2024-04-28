@@ -20,8 +20,11 @@ import edu.pucmm.pucmmeictgithubinvitations.dto.RequestBodyDTO;
 import edu.pucmm.pucmmeictgithubinvitations.properties.PucmmProperties;
 import edu.pucmm.pucmmeictgithubinvitations.service.EmailService;
 import edu.pucmm.pucmmeictgithubinvitations.service.GithubInvitationService;
+import edu.pucmm.pucmmeictgithubinvitations.service.RequestRateService;
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.ConstraintViolation;
 import jakarta.validation.ConstraintViolationException;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -33,68 +36,65 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.servlet.ModelAndView;
 
+import java.time.LocalDateTime;
 import java.util.stream.Collectors;
 
 @Controller
 @Slf4j
+@RequiredArgsConstructor
 public class GenericController {
     private final PucmmProperties pucmmProperties;
     private final GithubInvitationService githubInvitationService;
     private final EmailService emailService;
-
-    public GenericController(PucmmProperties pucmmProperties, GithubInvitationService githubInvitationService, EmailService emailService) {
-        this.pucmmProperties = pucmmProperties;
-        this.githubInvitationService = githubInvitationService;
-        this.emailService = emailService;
-    }
+    private final RequestRateService requestRateService;
 
     @PostMapping(path = "/", consumes = {MediaType.APPLICATION_FORM_URLENCODED_VALUE})
     @ResponseStatus(HttpStatus.ACCEPTED)
-    public ModelAndView requestInvitation(RequestBodyDTO dto, Model model) {
+    public ModelAndView requestInvitation(HttpServletRequest request, RequestBodyDTO dto, Model model) {
         log.debug("dto: {}", dto.toString());
+
+        final StringBuilder stringBuilder = new StringBuilder();
 
         model.addAttribute("subjects", pucmmProperties.getSubjects());
 
         try {
-            githubInvitationService.processInvitation(dto);
+            requestRateService.execute(request, () -> {
+                var student = githubInvitationService.processInvitation(dto);
 
-            model.addAttribute("success", true);
-            model.addAttribute("message", String.format("Invitation has been sent. Please check your email '%s'.", dto.getEmail().substring(0, 5) + "**********" + dto.getEmail().substring(dto.getEmail().length() - 5)));
+                model.addAttribute("success", true);
 
-            emailService.send("gustavojoseh@gmail.com", "[PUCMM EICT GITHUB INVITATIONS] A new user has been added to one of the teams", """
-                    Hello,
-                    
-                    A new user has been added with the following information:
-                    
-                    Subject: %s
-                    Github Username: %s
-                    Email: %s
-                    
-                    Please update the spreadsheet that belongs to the subject '%s' in the short time possible.
-                    
-                    Regards,
-                    
-                    Pucmm Eict Github Invitations
-                    """.formatted(dto.getSubject(), dto.getGithubUser(), dto.getEmail(), dto.getSubject()));
+                stringBuilder.setLength(0);
+                stringBuilder.append(String.format("Invitation has been sent. Please check your email '%s'.", dto.getEmail().substring(0, 5) + "**********" + dto.getEmail().substring(dto.getEmail().length() - 5)));
+
+                emailService.sendEmailNotification(dto, student, pucmmProperties.getSubjects().get(dto.getSubject()));
+            });
         } catch (ConstraintViolationException e) {
             model.addAttribute("success", false);
-            model.addAttribute("message", e.getConstraintViolations().stream().map(ConstraintViolation::getMessage).collect(Collectors.joining("<br>")));
+
+            stringBuilder.setLength(0);
+            stringBuilder.append(e.getConstraintViolations().stream().map(ConstraintViolation::getMessage).collect(Collectors.joining("<br>")));
 
             log.error(e.getMessage(), e);
         } catch (Exception e) {
             model.addAttribute("success", false);
-            model.addAttribute("message", e.getMessage());
+
+            stringBuilder.setLength(0);
+            stringBuilder.append(e.getMessage());
 
             log.error(e.getMessage(), e);
+        } finally {
+            model.addAttribute("message", stringBuilder.toString());
+            model.addAttribute("currentYear", String.valueOf(LocalDateTime.now().getYear()));
         }
 
-        return new ModelAndView("index");
+        return new ModelAndView("ftl/index");
     }
 
     @RequestMapping(path = "/", method = RequestMethod.GET)
     public ModelAndView index(Model model) {
         model.addAttribute("subjects", pucmmProperties.getSubjects());
+        model.addAttribute("currentYear", String.valueOf(LocalDateTime.now().getYear()));
 
-        return new ModelAndView("index");
+        return new ModelAndView("ftl/index");
     }
 }

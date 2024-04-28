@@ -16,11 +16,26 @@
 
 package edu.pucmm.pucmmeictgithubinvitations.service;
 
+import edu.pucmm.pucmmeictgithubinvitations.dto.RequestBodyDTO;
+import edu.pucmm.pucmmeictgithubinvitations.model.Student;
+import edu.pucmm.pucmmeictgithubinvitations.properties.model.SubjectProperty;
+import io.pebbletemplates.pebble.PebbleEngine;
+import io.pebbletemplates.pebble.template.PebbleTemplate;
+import jakarta.mail.Message;
+import jakarta.mail.MessagingException;
+import jakarta.mail.internet.InternetAddress;
+import jakarta.mail.internet.MimeMessage;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.mail.SimpleMailMessage;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Service;
+
+import java.io.IOException;
+import java.io.StringWriter;
+import java.io.Writer;
+import java.util.HashMap;
+import java.util.Map;
 
 @Service
 @RequiredArgsConstructor
@@ -28,23 +43,51 @@ import org.springframework.stereotype.Service;
 public class EmailService {
     private final JavaMailSender javaMailSender;
 
+    @Value("${pucmm.features.send-email-notification}")
+    private Boolean pucmmSendEmailNotification;
+
     public void send(String to, String subject, String body) {
         log.info("Attempting to send email to: '{}'...", to);
 
-        if (true) {
+        if (pucmmSendEmailNotification.equals(Boolean.FALSE)) {
             log.warn("Feature to send emails is not enabled, therefore email will not be sent...");
 
             return;
         }
 
-        SimpleMailMessage message = new SimpleMailMessage();
+        MimeMessage message = javaMailSender.createMimeMessage();
 
-        message.setTo(to);
-        message.setSubject(subject);
-        message.setText(body);
-        message.setFrom(System.getenv("SMTP_FROM_EMAIL"));
-        message.setCc(System.getenv("SMTP_CC_EMAIL"));
+        try {
+            message.setRecipient(Message.RecipientType.TO, new InternetAddress(to));
+            message.setSubject(subject);
+            message.setFrom(System.getenv("SMTP_FROM_EMAIL"));
+            message.setRecipient(Message.RecipientType.CC, new InternetAddress(System.getenv("SMTP_CC_EMAIL")));
+            message.setContent(body, "text/html; charset=utf-8");
 
-        javaMailSender.send(message);
+            javaMailSender.send(message);
+        } catch (MessagingException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public void sendEmailNotification(final RequestBodyDTO dto, final Student student, final SubjectProperty subjectProperty) {
+        PebbleEngine engine = new PebbleEngine.Builder().build();
+        PebbleTemplate compiledTemplate = engine.getTemplate("templates/pebble/notification.peb.html");
+
+        Writer writer = new StringWriter();
+        Map<String, Object> context = new HashMap<>();
+        context.put("subject", dto.getSubject());
+        context.put("githubUsername", dto.getGithubUser());
+        context.put("email", dto.getEmail());
+        context.put("spreadsheetId", subjectProperty.getGoogleSpreadSheetId());
+        context.put("studentFullName", student.getFullName());
+
+        try {
+            compiledTemplate.evaluate(writer, context);
+
+            send("gustavojoseh@gmail.com", "[PUCMM EICT GITHUB INVITATIONS] A new user has been added to one of the teams", writer.toString());
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
     }
 }

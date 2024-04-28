@@ -1,4 +1,8 @@
 pucmm:
+  features:
+    send-email-notification: ${PUCMM_SEND_EMAIL_NOTIFICATION}
+  rate-limit: ${RATE_LIMIT}
+  cache-in-seconds: ${CACHE_IN_SECONDS}
   github-org: ${PUCMM_GITHUB_ORGANIZATION}
   subjects:
     st-icc-352:

@@ -19,6 +19,7 @@ package edu.pucmm.pucmmeictgithubinvitations.service;
 import edu.pucmm.pucmmeictgithubinvitations.dto.GithubInvitationDTO;
 import edu.pucmm.pucmmeictgithubinvitations.dto.RequestBodyDTO;
 import edu.pucmm.pucmmeictgithubinvitations.feign.GithubFeign;
+import edu.pucmm.pucmmeictgithubinvitations.model.Student;
 import edu.pucmm.pucmmeictgithubinvitations.properties.PucmmProperties;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -41,12 +42,11 @@ public class GithubInvitationService {
     private final PucmmProperties pucmmProperties;
     private final GithubFeign githubFeign;
 
-    public void processInvitation(final @Valid RequestBodyDTO dto) {
+    public Student processInvitation(final @Valid RequestBodyDTO dto) {
         var org = pucmmProperties.getGithubOrg();
         var subject = pucmmProperties.getSubjects().get(dto.getSubject());
         var githubDto = GithubInvitationDTO.builder().role("member").build();
-
-        validateEmail(dto.getEmail(), dto.getSubject());
+        var student = validateAndReturnStudent(dto.getEmail(), dto.getSubject());
 
         log.debug("org: {}", org);
         log.debug("subject: {}", subject);
@@ -56,6 +56,8 @@ public class GithubInvitationService {
         if (Objects.nonNull(subject) && Objects.nonNull(dto.getGithubUser())) {
             try {
                 githubFeign.addOrUpdateMemberInvitation(org, subject.getGithubTeam(), dto.getGithubUser(), githubDto);
+
+                return student;
             } catch (Exception e) {
                 var message = "There has been an error while sending the request to github...";
 
@@ -68,15 +70,20 @@ public class GithubInvitationService {
         }
     }
 
-    private void validateEmail(final String email, final String subject) {
+    private Student validateAndReturnStudent(final String email, final String subject) {
         try {
             var resource = String.format("%s/.subjects/%s/.valid-emails", System.getProperty("user.home"), subject);
 
-            var validEmails = new HashSet<>(FileUtils.readLines(new File(resource), Charset.defaultCharset()));
+            var validEmails = new HashSet<>(FileUtils.readLines(new File(resource), Charset.defaultCharset()))
+                    .stream()
+                    .map(current -> Student.builder().email(current.split(",")[0]).fullName(current.split(",")[1]).build())
+                    .toList();
 
-            if (validEmails.stream().noneMatch(s -> s.equalsIgnoreCase(email))) {
+            if (validEmails.stream().noneMatch(s -> s.getEmail().equalsIgnoreCase(email))) {
                 throw new RuntimeException(String.format("The email '%s' is not valid. Please refer to the reviser for more information.", email));
             }
+
+            return validEmails.stream().filter(s -> s.getEmail().equalsIgnoreCase(email)).findFirst().orElseThrow();
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
