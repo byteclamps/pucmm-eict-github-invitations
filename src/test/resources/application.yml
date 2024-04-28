@@ -1,23 +1,23 @@
 pucmm:
-  github-org: ${PUCMM_GITHUB_ORGANIZATION}
+  github-org: test
   subjects:
     st-icc-352:
-      name: 'Programacion Web'
-      github-team: '${PROGRAMACION_WEB_TEAM}'
+      name: 'test-1'
+      github-team: 'test-1-team'
       google-spread-sheet-id: 'xxx'
     st-icc-354:
-      name: 'Programacion Web Avanzada'
-      github-team: '${PROGRAMACION_WEB_AVANZADA_TEAM}'
+      name: 'test-2'
+      github-team: 'test-2-team'
       google-spread-sheet-id: 'xxx'
 debug: true
 
 logging:
   level:
     edu:
-      pucmm: ${LOG_LEVEL_EDU_PUCMM:info}
+      pucmm: debug
 
 server:
-  port: ${SERVER_PORT:8080}
+  port: 8080
 
 spring:
   mail:
@@ -31,10 +31,10 @@ spring:
             enable: true
           transport:
             protocol: smtp
-    host: ${SMTP_HOST}
-    port: ${SMTP_PORT}
-    username: ${SMTP_USERNAME}
-    password: ${SMTP_PASSWORD}
+    host: 'localhost'
+    port: '587'
+    username: 'localhost'
+    password: 'localhost'
     default-encoding: UTF-8
     protocol: smtp
     test-connection: true
@@ -47,7 +47,7 @@ spring:
     resources:
       static-locations: classpath:/static/
   profiles:
-    active: ${SPRING_PROFILE:local}
+    active: test
     default: local
   freemarker:
     charset: UTF-8

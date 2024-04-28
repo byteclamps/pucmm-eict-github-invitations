@@ -35,7 +35,7 @@
     </div>
     <h1 class="text-center mb-4 text-4xl font-extrabold leading-none tracking-tight text-gray-900 md:text-5xl lg:text-6xl dark:text-black">PUCMM EICT GITHUB INVITATIONS</h1>
     <p class="text-center mb-6 text-lg font-normal text-gray-500 lg:text-xl sm:px-16 xl:px-48 dark:text-gray-600">Application for self-inviting into github subject's team.</p>
-    <form class="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4 m-10" method="post" action="/">
+    <form class="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4 m-10" id="github-form" method="post" action="/">
         <div class="mb-4">
             <label class="block text-gray-700 text-sm font-bold mb-2" for="subject">
                 Materia
@@ -43,7 +43,7 @@
             <select class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" name="subject" id="subject">
                 <option value="">Seleccione una opcion</option>
                 <#list subjects?keys as key>
-                    <option value="${key}">${subjects[key]}</option>
+                    <option value="${key}">${subjects[key].getName()}</option>
                 </#list>
             </select>
         </div>
@@ -81,7 +81,7 @@
             <br>
         </#if>
         <div class="flex items-center justify-between">
-            <button class="bg-blue-500 w-full hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+            <button id="submit-button" class="bg-blue-500 w-full hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
                     type="submit">
                 Enviar
             </button>

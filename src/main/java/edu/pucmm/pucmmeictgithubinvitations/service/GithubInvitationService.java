@@ -43,19 +43,19 @@ public class GithubInvitationService {
 
     public void processInvitation(final @Valid RequestBodyDTO dto) {
         var org = pucmmProperties.getGithubOrg();
-        var foundTeam = pucmmProperties.getCurrentTeams().get(dto.getSubject());
+        var subject = pucmmProperties.getSubjects().get(dto.getSubject());
         var githubDto = GithubInvitationDTO.builder().role("member").build();
 
         validateEmail(dto.getEmail(), dto.getSubject());
 
         log.debug("org: {}", org);
-        log.debug("foundTeam: {}", foundTeam);
+        log.debug("subject: {}", subject);
         log.debug("githubDto: {}", githubDto);
         log.debug("dto: {}", dto);
 
-        if (Objects.nonNull(foundTeam) && Objects.nonNull(dto.getGithubUser())) {
+        if (Objects.nonNull(subject) && Objects.nonNull(dto.getGithubUser())) {
             try {
-                githubFeign.addOrUpdateMemberInvitation(org, foundTeam, dto.getGithubUser(), githubDto);
+                githubFeign.addOrUpdateMemberInvitation(org, subject.getGithubTeam(), dto.getGithubUser(), githubDto);
             } catch (Exception e) {
                 var message = "There has been an error while sending the request to github...";
 

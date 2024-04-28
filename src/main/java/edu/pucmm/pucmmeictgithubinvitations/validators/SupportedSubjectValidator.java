@@ -38,7 +38,7 @@ public class SupportedSubjectValidator implements ConstraintValidator<SupportedS
             return true;
         }
 
-        return pucmmProperties.getAvailableSubjects().get(s) != null;
+        return pucmmProperties.getSubjects().get(s) != null;
     }
 }
 

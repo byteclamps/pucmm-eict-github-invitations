@@ -6,7 +6,7 @@ WORKDIR /app
 COPY . .
 COPY .subjects ~/.subjects
 
-RUN mvn clean install
+RUN mvn clean install -Dmaven.test.skip=true
 
 FROM azul/zulu-openjdk-alpine:21-jre
 

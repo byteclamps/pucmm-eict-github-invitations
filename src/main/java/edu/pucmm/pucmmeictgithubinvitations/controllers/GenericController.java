@@ -18,6 +18,7 @@ package edu.pucmm.pucmmeictgithubinvitations.controllers;
 
 import edu.pucmm.pucmmeictgithubinvitations.dto.RequestBodyDTO;
 import edu.pucmm.pucmmeictgithubinvitations.properties.PucmmProperties;
+import edu.pucmm.pucmmeictgithubinvitations.service.EmailService;
 import edu.pucmm.pucmmeictgithubinvitations.service.GithubInvitationService;
 import jakarta.validation.ConstraintViolation;
 import jakarta.validation.ConstraintViolationException;
@@ -39,10 +40,12 @@ import java.util.stream.Collectors;
 public class GenericController {
     private final PucmmProperties pucmmProperties;
     private final GithubInvitationService githubInvitationService;
+    private final EmailService emailService;
 
-    public GenericController(PucmmProperties pucmmProperties, GithubInvitationService githubInvitationService) {
+    public GenericController(PucmmProperties pucmmProperties, GithubInvitationService githubInvitationService, EmailService emailService) {
         this.pucmmProperties = pucmmProperties;
         this.githubInvitationService = githubInvitationService;
+        this.emailService = emailService;
     }
 
     @PostMapping(path = "/", consumes = {MediaType.APPLICATION_FORM_URLENCODED_VALUE})
@@ -50,13 +53,29 @@ public class GenericController {
     public ModelAndView requestInvitation(RequestBodyDTO dto, Model model) {
         log.debug("dto: {}", dto.toString());
 
-        model.addAttribute("subjects", pucmmProperties.getAvailableSubjects());
+        model.addAttribute("subjects", pucmmProperties.getSubjects());
 
         try {
             githubInvitationService.processInvitation(dto);
 
             model.addAttribute("success", true);
             model.addAttribute("message", String.format("Invitation has been sent. Please check your email '%s'.", dto.getEmail().substring(0, 5) + "**********" + dto.getEmail().substring(dto.getEmail().length() - 5)));
+
+            emailService.send("gustavojoseh@gmail.com", "[PUCMM EICT GITHUB INVITATIONS] A new user has been added to one of the teams", """
+                    Hello,
+                    
+                    A new user has been added with the following information:
+                    
+                    Subject: %s
+                    Github Username: %s
+                    Email: %s
+                    
+                    Please update the spreadsheet that belongs to the subject '%s' in the short time possible.
+                    
+                    Regards,
+                    
+                    Pucmm Eict Github Invitations
+                    """.formatted(dto.getSubject(), dto.getGithubUser(), dto.getEmail(), dto.getSubject()));
         } catch (ConstraintViolationException e) {
             model.addAttribute("success", false);
             model.addAttribute("message", e.getConstraintViolations().stream().map(ConstraintViolation::getMessage).collect(Collectors.joining("<br>")));
@@ -74,7 +93,7 @@ public class GenericController {
 
     @RequestMapping(path = "/", method = RequestMethod.GET)
     public ModelAndView index(Model model) {
-        model.addAttribute("subjects", pucmmProperties.getAvailableSubjects());
+        model.addAttribute("subjects", pucmmProperties.getSubjects());
 
         return new ModelAndView("index");
     }

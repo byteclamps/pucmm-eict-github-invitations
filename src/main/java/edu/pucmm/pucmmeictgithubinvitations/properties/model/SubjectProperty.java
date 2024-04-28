@@ -14,23 +14,13 @@
  *    limitations under the License.
  */
 
-package edu.pucmm.pucmmeictgithubinvitations.properties;
+package edu.pucmm.pucmmeictgithubinvitations.properties.model;
 
-import edu.pucmm.pucmmeictgithubinvitations.properties.model.SubjectProperty;
-import lombok.Getter;
-import lombok.Setter;
-import org.springframework.boot.context.properties.ConfigurationProperties;
-import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.PropertySource;
+import lombok.Data;
 
-import java.util.Map;
-
-@Configuration
-@PropertySource("classpath:application.yml")
-@ConfigurationProperties(prefix = "pucmm")
-@Getter
-@Setter
-public class PucmmProperties {
-    private Map<String, SubjectProperty> subjects;
-    private String githubOrg;
+@Data
+public class SubjectProperty {
+    private String name;
+    private String githubTeam;
+    private String googleSpreadSheetId;
 }
