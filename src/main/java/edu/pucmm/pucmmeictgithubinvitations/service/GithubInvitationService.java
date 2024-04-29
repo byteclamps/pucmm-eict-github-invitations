@@ -32,6 +32,7 @@ import org.springframework.validation.annotation.Validated;
 import java.io.File;
 import java.io.IOException;
 import java.nio.charset.Charset;
+import java.security.GeneralSecurityException;
 import java.util.HashSet;
 import java.util.Objects;
 
@@ -53,7 +54,7 @@ public class GithubInvitationService {
 
         try {
             student = studentRepository.findStudent(dto);
-        } catch (IOException e) {
+        } catch (IOException | GeneralSecurityException e) {
             throw new RuntimeException(e);
         }
 

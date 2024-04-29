@@ -12,7 +12,6 @@ services:
       - .env
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
-      - .subjects:/root/.subjects
     networks:
       pucmm_eict_github_invitations:
 

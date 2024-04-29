@@ -16,7 +16,6 @@
 
 clear
 
-cp -r ~/.subjects .
 docker container rm pucmm-eict-github-invitations -v
 docker network rm pucmm_eict_github_invitations
 docker network create pucmm_eict_github_invitations

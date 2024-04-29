@@ -23,6 +23,7 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.PropertySource;
 
+import java.util.List;
 import java.util.Map;
 
 @Configuration
@@ -33,4 +34,5 @@ import java.util.Map;
 public class PucmmProperties {
     private Map<String, SubjectProperty> subjects;
     private String githubOrg;
+    List<String> emails;
 }

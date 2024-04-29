@@ -20,3 +20,4 @@ buildNumber.properties
 *.iml
 HELP.md
 .subjects
+*.p12

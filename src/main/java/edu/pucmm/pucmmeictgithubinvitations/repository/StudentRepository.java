@@ -18,36 +18,20 @@ package edu.pucmm.pucmmeictgithubinvitations.repository;
 
 import edu.pucmm.pucmmeictgithubinvitations.dto.RequestBodyDTO;
 import edu.pucmm.pucmmeictgithubinvitations.model.Student;
-import edu.pucmm.pucmmeictgithubinvitations.properties.PucmmProperties;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.io.FileUtils;
 import org.springframework.stereotype.Repository;
 
-import java.io.File;
 import java.io.IOException;
-import java.nio.charset.Charset;
-import java.util.HashSet;
+import java.security.GeneralSecurityException;
 
 @Repository
 @Slf4j
 @RequiredArgsConstructor
 public class StudentRepository {
-    private final PucmmProperties pucmmProperties;
+    private final GoogleSpreadsheetRepository googleSpreadsheetRepository;
 
-    public Student findStudent(final RequestBodyDTO dto) throws IOException {
-        var resource = String.format("%s/.subjects/%s/.valid-emails", System.getProperty("user.home"), dto.getSubject());
-        var validEmails = new HashSet<>(FileUtils.readLines(new File(resource), Charset.defaultCharset()))
-                .stream()
-                .map(current -> Student.builder().email(current.split(",")[0]).fullName(current.split(",")[1]).build())
-                .toList();
-
-        var student = validEmails.stream().filter(s -> s.getEmail().equalsIgnoreCase(dto.getEmail())).findFirst().orElseThrow(() -> new RuntimeException(String.format("The email '%s' is not valid. Please refer to the reviser for more information.", dto.getEmail())));
-        student.setSubjectId(dto.getSubject());
-        student.setSubjectName(pucmmProperties.getSubjects().get(dto.getSubject()).getName());
-        student.setGithubUsername(dto.getGithubUser());
-        student.setSpreadsheetId(pucmmProperties.getSubjects().get(dto.getSubject()).getGoogleSpreadSheetId());
-
-        return student;
+    public Student findStudent(final RequestBodyDTO dto) throws IOException, GeneralSecurityException {
+        return googleSpreadsheetRepository.findStudentByEmail(dto);
     }
 }
