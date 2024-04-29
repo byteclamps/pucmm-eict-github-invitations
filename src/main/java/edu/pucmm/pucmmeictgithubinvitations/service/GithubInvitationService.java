@@ -25,15 +25,9 @@ import edu.pucmm.pucmmeictgithubinvitations.repository.StudentRepository;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.io.FileUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.validation.annotation.Validated;
 
-import java.io.File;
-import java.io.IOException;
-import java.nio.charset.Charset;
-import java.security.GeneralSecurityException;
-import java.util.HashSet;
 import java.util.Objects;
 
 @Service
@@ -50,14 +44,6 @@ public class GithubInvitationService {
         var subject = pucmmProperties.getSubjects().get(dto.getSubject());
         var githubDto = GithubInvitationDTO.builder().role("member").build();
 
-        Student student = null;
-
-        try {
-            student = studentRepository.findStudent(dto);
-        } catch (IOException | GeneralSecurityException e) {
-            throw new RuntimeException(e);
-        }
-
         log.debug("org: {}", org);
         log.debug("subject: {}", subject);
         log.debug("githubDto: {}", githubDto);
@@ -65,6 +51,8 @@ public class GithubInvitationService {
 
         if (Objects.nonNull(subject) && Objects.nonNull(dto.getGithubUser())) {
             try {
+                var student = studentRepository.findStudent(dto);
+
                 githubFeign.addOrUpdateMemberInvitation(org, subject.getGithubTeam(), dto.getGithubUser(), githubDto);
 
                 return student;

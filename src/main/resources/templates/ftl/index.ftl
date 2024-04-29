@@ -41,10 +41,10 @@
     <form class="shadow-md rounded px-8 pt-6 pb-8 mb-4 m-10 w-1/2 bg-white" id="github-form" method="post" action="/">
         <div class="mb-4">
             <label class="block text-gray-700 text-sm font-bold mb-2" for="subject">
-                Materia
+                Subject
             </label>
             <select class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" name="subject" id="subject">
-                <option value="">Seleccione una opcion</option>
+                <option value="">Select an option</option>
                 <#list subjects?keys as key>
                     <option value="${key}">${subjects[key].getName()}</option>
                 </#list>
@@ -52,13 +52,13 @@
         </div>
         <div class="mb-4">
             <label class="block text-gray-700 text-sm font-bold mb-2" for="username">
-                Usuario (Github)
+                Username (Github)
             </label>
             <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" type="text" id="githubUser" name="githubUser" placeholder="Your github valid username"/>
         </div>
         <div class="mb-4">
             <label class="block text-gray-700 text-sm font-bold mb-2" for="email">
-                Correo Electronico
+                Email
             </label>
             <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" type="text" id="email" name="email" placeholder="Your institution email (*****@ce.pucmm.edu.do)"/>
         </div>
