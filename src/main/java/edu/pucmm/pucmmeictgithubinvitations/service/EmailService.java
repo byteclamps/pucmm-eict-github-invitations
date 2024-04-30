@@ -17,6 +17,7 @@
 package edu.pucmm.pucmmeictgithubinvitations.service;
 
 import edu.pucmm.pucmmeictgithubinvitations.model.Student;
+import edu.pucmm.pucmmeictgithubinvitations.properties.PucmmProperties;
 import io.pebbletemplates.pebble.PebbleEngine;
 import io.pebbletemplates.pebble.template.PebbleTemplate;
 import jakarta.mail.Message;
@@ -40,6 +41,7 @@ import java.util.Map;
 @Slf4j
 public class EmailService {
     private final JavaMailSender javaMailSender;
+    private final PucmmProperties pucmmProperties;
 
     @Value("${pucmm.features.send-email-notification}")
     private Boolean pucmmSendEmailNotification;
@@ -69,6 +71,8 @@ public class EmailService {
     }
 
     public void sendEmailNotification(final Student student) {
+        final var subject = pucmmProperties.getSubjects().get(student.getSubjectId());
+
         PebbleEngine engine = new PebbleEngine.Builder().build();
         PebbleTemplate compiledTemplate = engine.getTemplate("templates/pebble/notification.peb.html");
 
@@ -79,11 +83,13 @@ public class EmailService {
         context.put("email", student.getEmail());
         context.put("spreadsheetId", student.getSpreadsheetId());
         context.put("studentFullName", student.getFullName());
+        context.put("githubTeam", subject.getGithubTeam());
+        context.put("githubOrg", pucmmProperties.getGithubOrg());
 
         try {
             compiledTemplate.evaluate(writer, context);
 
-            send("gustavojoseh@gmail.com", "[PUCMM EICT GITHUB INVITATIONS] A new user has been added to one of the teams", writer.toString());
+            send(pucmmProperties.getSendToEmail(), String.format("[PUCMM EICT GITHUB INVITATIONS] A new user has been added to the team %s (%s).", subject.getGithubTeam(), student.getSubjectId()), writer.toString());
         } catch (IOException e) {
             throw new RuntimeException(e);
         }

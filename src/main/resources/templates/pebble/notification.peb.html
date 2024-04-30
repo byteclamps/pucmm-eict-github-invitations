@@ -14,30 +14,18 @@
   ~    limitations under the License.
   -->
 
-<!doctype html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport"
-          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Document</title>
-</head>
-<body>
-Hello,<br>
+<div>Hello,</div>
 <br>
-A new user has been added with the following information:<br>
+<div>A new user has been invited to the team <b><a href="https://github.com/orgs/{{githubOrg}}/teams/{{githubTeam}}">{{githubTeam}}</a></b>.</div>
 <br>
-<b>Subject:</b> {{subject}}<br>
-<b>GitHub Username:</b> {{githubUsername}}<br>
-<b>Email:</b> {{email}}<br>
-<b>Student:</b> {{studentFullName}}<br>
-<b>GitHub Repository:</b> <a href="https://github.com/{{githubUsername}}">https://github.com/{{githubUsername}}</a><br>
+<div>Student information below:</div>
+<div><b>Full Name:</b> {{studentFullName}}</div>
+<div><b>Subject:</b> {{subject}}</div>
+<div><b>GitHub Username:</b> <a href="https://github.com/{{githubUsername}}">{{githubUsername}}</a></div>
+<div><b>Email:</b> {{email}}</div>
 <br>
-Please update the <a href="https://docs.google.com/spreadsheets/d/{{spreadsheetId}}/edit#gid=0">spreadsheet</a> that belongs to the subject '{{subject}}' in the short time possible.<br>
+<div>Please follow up on this user in the next few days to update repository accordingly.</div>
 <br>
-Regards,<br>
+<div>Regards,</div>
 <br>
-Pucmm Eict GitHub Invitations<br>
-</body>
-</html>
+<div>Pucmm Eict GitHub Invitations</div>

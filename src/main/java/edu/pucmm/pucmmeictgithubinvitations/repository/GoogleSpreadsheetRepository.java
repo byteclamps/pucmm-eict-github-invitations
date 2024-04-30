@@ -71,6 +71,8 @@ public class GoogleSpreadsheetRepository {
         var student = result
                 .stream()
                 .filter(current -> {
+                    if (current.size() < 2) return false;
+
                     var email = current.get(1).toString();
 
                     return email.equalsIgnoreCase(dto.getEmail());

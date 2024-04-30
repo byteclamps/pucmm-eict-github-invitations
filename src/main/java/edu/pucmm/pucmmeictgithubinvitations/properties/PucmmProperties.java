@@ -34,5 +34,6 @@ import java.util.Map;
 public class PucmmProperties {
     private Map<String, SubjectProperty> subjects;
     private String githubOrg;
-    List<String> emails;
+    private List<String> emails;
+    private String sendToEmail;
 }
