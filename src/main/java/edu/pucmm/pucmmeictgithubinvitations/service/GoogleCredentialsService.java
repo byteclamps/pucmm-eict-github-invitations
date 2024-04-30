@@ -27,10 +27,7 @@ import lombok.NoArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
-import java.io.File;
-import java.io.FileInputStream;
 import java.io.IOException;
-import java.net.URL;
 import java.nio.file.Paths;
 import java.security.GeneralSecurityException;
 import java.util.List;
@@ -40,12 +37,11 @@ import java.util.List;
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class GoogleCredentialsService {
     public static GoogleCredentials getCredentials() throws IOException {
-        final URL path = Paths.get(System.getenv("GOOGLE_SERVICE_ACCOUNT_P12_FILE_LOCATION")).toUri().toURL();
-        final File p12 = new File(path.getFile());
+        var path = Paths.get(System.getenv("GOOGLE_SERVICE_ACCOUNT_JSON_FILE_LOCATION")).toUri().toURL();
         final List<String> SCOPES_ARRAY = List.of(SheetsScopes.SPREADSHEETS_READONLY);
 
         return GoogleCredentials
-                .fromStream(new FileInputStream(p12))
+                .fromStream(path.openStream())
                 .createScoped(SCOPES_ARRAY);
     }
 
