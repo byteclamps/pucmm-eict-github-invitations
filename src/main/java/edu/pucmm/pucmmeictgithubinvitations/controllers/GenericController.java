@@ -18,6 +18,7 @@ package edu.pucmm.pucmmeictgithubinvitations.controllers;
 
 import edu.pucmm.pucmmeictgithubinvitations.dto.RequestBodyDTO;
 import edu.pucmm.pucmmeictgithubinvitations.properties.PucmmProperties;
+import edu.pucmm.pucmmeictgithubinvitations.repository.StudentRepository;
 import edu.pucmm.pucmmeictgithubinvitations.service.EmailService;
 import edu.pucmm.pucmmeictgithubinvitations.service.GithubInvitationService;
 import edu.pucmm.pucmmeictgithubinvitations.service.RequestRateService;
@@ -47,6 +48,7 @@ public class GenericController {
     private final GithubInvitationService githubInvitationService;
     private final EmailService emailService;
     private final RequestRateService requestRateService;
+    private final StudentRepository studentRepository;
 
     @PostMapping(path = "/", consumes = {MediaType.APPLICATION_FORM_URLENCODED_VALUE})
     @ResponseStatus(HttpStatus.ACCEPTED)
@@ -56,10 +58,20 @@ public class GenericController {
         final StringBuilder stringBuilder = new StringBuilder();
 
         model.addAttribute("subjects", pucmmProperties.getSubjects());
+        model.addAttribute("currentYear", String.valueOf(LocalDateTime.now().getYear()));
+
+        if (githubInvitationService.memberExists(dto)) {
+            model.addAttribute("success", true);
+            model.addAttribute("message", "The invitation has been sent already. Please check your email.");
+
+            return new ModelAndView("ftl/index");
+        }
 
         try {
+            var student = studentRepository.findStudent(dto);
+
             requestRateService.execute(request, () -> {
-                var student = githubInvitationService.processInvitation(dto);
+                githubInvitationService.processInvitation(dto);
 
                 model.addAttribute("success", true);
 
@@ -81,7 +93,6 @@ public class GenericController {
             log.error(e.getMessage(), e);
         } finally {
             model.addAttribute("message", stringBuilder.toString());
-            model.addAttribute("currentYear", String.valueOf(LocalDateTime.now().getYear()));
         }
 
         return new ModelAndView("ftl/index");

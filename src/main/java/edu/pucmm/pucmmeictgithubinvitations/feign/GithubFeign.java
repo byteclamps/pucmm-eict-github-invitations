@@ -18,6 +18,7 @@ package edu.pucmm.pucmmeictgithubinvitations.feign;
 
 import edu.pucmm.pucmmeictgithubinvitations.configuration.GithubFeignConfiguration;
 import edu.pucmm.pucmmeictgithubinvitations.dto.GithubInvitationDTO;
+import edu.pucmm.pucmmeictgithubinvitations.dto.GithubMemberDTO;
 import lombok.NonNull;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -33,5 +34,12 @@ public interface GithubFeign {
             @PathVariable("team") @NonNull String team,
             @PathVariable("username") String username,
             @RequestBody GithubInvitationDTO dto
+    );
+
+    @RequestMapping(path = "/orgs/{org}/teams/{team}/memberships/{username}", method = RequestMethod.GET)
+    GithubMemberDTO memberExists(
+            @PathVariable("org") String org,
+            @PathVariable("team") @NonNull String team,
+            @PathVariable("username") String username
     );
 }
