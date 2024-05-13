@@ -74,6 +74,6 @@ public class GithubInvitationService {
 
         GithubMemberDTO githubMemberDTO = githubFeign.memberExists(org, subject.getGithubTeam(), dto.getGithubUser());
 
-        return githubMemberDTO != null && !githubMemberDTO.getUrl().isEmpty();
+        return githubMemberDTO == null || !githubMemberDTO.getUrl().isEmpty();
     }
 }
