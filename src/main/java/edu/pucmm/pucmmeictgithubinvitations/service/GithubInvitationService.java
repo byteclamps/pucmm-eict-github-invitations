@@ -21,6 +21,7 @@ import edu.pucmm.pucmmeictgithubinvitations.dto.GithubMemberDTO;
 import edu.pucmm.pucmmeictgithubinvitations.dto.RequestBodyDTO;
 import edu.pucmm.pucmmeictgithubinvitations.feign.GithubFeign;
 import edu.pucmm.pucmmeictgithubinvitations.properties.PucmmProperties;
+import feign.FeignException;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -72,8 +73,18 @@ public class GithubInvitationService {
         log.debug("githubDto: {}", githubDto);
         log.debug("dto: {}", dto);
 
-        GithubMemberDTO githubMemberDTO = githubFeign.memberExists(org, subject.getGithubTeam(), dto.getGithubUser());
+        try {
+            GithubMemberDTO githubMemberDTO = githubFeign.memberExists(org, subject.getGithubTeam(), dto.getGithubUser());
 
-        return githubMemberDTO == null || !githubMemberDTO.getUrl().isEmpty();
+            return githubMemberDTO != null && !githubMemberDTO.getUrl().isEmpty();
+        } catch (FeignException e) {
+            if (e.status() == 404) {
+                log.warn(String.format("User '%s' not found...", dto.getGithubUser()));
+
+                return false;
+            }
+
+            throw new RuntimeException(e);
+        }
     }
 }
