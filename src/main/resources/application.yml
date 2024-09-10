@@ -7,18 +7,12 @@ pucmm:
   emails: ${PUCMM_EMAILS:}
   send-to-email: ${PUCMM_SEND_TO_EMAIL}
   subjects:
-    st-icc-352:
-      name: ${PROGRAMACION_WEB_TEAM_LABEL}
-      github-team: ${PROGRAMACION_WEB_TEAM}
-      google-spread-sheet-id: ${PROGRAMACION_WEB_SPREADSHEET_ID}
-      pva-current-id: ${PROGRAMACION_WEB_PUCMM_PVA_CURRENT_ID}
-      spread-sheet-range: ${PROGRAMACION_WEB_SPREADSHEET_RANGE}
-    st-itt-363:
-      name: ${PROYECTO_INTEGRADOR_TEAM_LABEL}
-      github-team: ${PROYECTO_INTEGRADOR_TEAM}
-      google-spread-sheet-id: ${PROYECTO_INTEGRADOR_SPREADSHEET_ID}
-      pva-current-id: ${PROYECTO_INTEGRADOR_PUCMM_PVA_CURRENT_ID}
-      spread-sheet-range: ${PROYECTO_INTEGRADOR_SPREADSHEET_RANGE}
+    st-icc-354:
+      name: ${PROGRAMACION_WEB_AVANZADA_TEAM_LABEL}
+      github-team: ${PROGRAMACION_WEB_AVANZADA_TEAM}
+      google-spread-sheet-id: ${PROGRAMACION_WEB_AVANZADA_SPREADSHEET_ID}
+      pva-current-id: ${PROGRAMACION_WEB_AVANZADA_PUCMM_PVA_CURRENT_ID}
+      spread-sheet-range: ${PROGRAMACION_WEB_AVANZADA_SPREADSHEET_RANGE}
 
 google:
   service-account-id: ${GOOGLE_SERVICE_ACCOUNT_ID}
