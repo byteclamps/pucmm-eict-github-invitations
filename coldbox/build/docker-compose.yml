@@ -1,0 +1,19 @@
+version: "3"
+services:
+  pucmm-eict-github-invitations:
+    build: 
+      context: .
+      dockerfile: Dockerfile
+    container_name: pucmm-eict-github-invitations
+    restart: "always"
+    hostname: pucmm-eict-github-invitations
+    env_file:
+      - .env
+    ports:
+      - 8889:8443
+    networks:
+      - "contabo"
+
+networks:
+  contabo:
+    external: true

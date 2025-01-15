@@ -1,0 +1,37 @@
+FROM ortussolutions/commandbox:lucee6 AS workbench
+
+# Metadata
+LABEL maintainer="Gustavo Henriquez <gustavojoseh@gmail.com>"
+LABEL repository="https://github.com/byteclamps/pucmm-eict-github-invitations"
+
+# Environment variables
+ENV BOX_SERVER_APP_CFENGINE="lucee@6"
+ENV FINALIZE_STARTUP=true
+
+# Copy application files to root - Uses .dockerignore to ignore files
+WORKDIR /app
+COPY . .
+
+RUN $BUILD_DIR/run.sh
+
+FROM eclipse-temurin:21.0.1_12-jdk-jammy AS app
+
+RUN mkdir -p /etc/certificates
+
+# COPY our generated files
+COPY --from=workbench /app /app
+COPY --from=workbench /app/certificates/local /etc/certificates
+COPY --from=workbench /usr/local/lib/serverHome /usr/local/lib/serverHome
+
+RUN mkdir -p /usr/local/lib/CommandBox/lib
+
+COPY --from=workbench /usr/local/lib/CommandBox/lib/runwar-5.0.8.jar /usr/local/lib/CommandBox/lib/runwar-5.0.8.jar
+COPY --from=workbench /usr/local/bin/startup-final.sh /usr/local/bin/run.sh
+
+# Restore working directory environment
+WORKDIR /app
+
+ENV HEALTHCHECK_URI="https://127.0.0.1:8443/healthcheck"
+HEALTHCHECK --interval=20s --timeout=30s --retries=15 CMD curl --fail ${HEALTHCHECK_URI} || exit 1
+
+CMD /usr/local/bin/run.sh
