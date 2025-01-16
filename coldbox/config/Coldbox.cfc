@@ -9,7 +9,7 @@ component {
 		 * Loading box.json into the coldbox structure
 		 */
 		boxConfig = deserializeJSON( fileRead( expandPath( "/box.json" ) ) );
-		subjects = deserializeJSON( fileRead( expandPath( "/subjects.json" ) ) );
+		subjects  = deserializeJSON( fileRead( expandPath( "/subjects.json" ) ) );
 
 		/**
 		 * --------------------------------------------------------------------------
@@ -68,15 +68,21 @@ component {
 		 */
 		settings = {
 			isLocal : true,
-			pucmm: {
-				features : {
-					sendEmailNotification: true
-				},
-				rateLimit: 3,
-				githubOrg: "pucmm-eict",
-				emails: [ "gustavojoseh@gmail.com" ],
-				sendToEmail: "gustavojoseh@gmail.com",
-				subjects: subjects
+			pucmm   : {
+				features    : { sendEmailNotification : true },
+				rateLimit   : 3,
+				emails      : [ "gustavojoseh@gmail.com" ],
+				sendToEmail : "gustavojoseh@gmail.com",
+				subjects    : subjects
+			},
+			github : {
+				token : getSystemSetting( "GITHUB_TOKEN" ),
+				org   : "pucmm-eict"
+			},
+			google : {
+				api : {
+					key : getSystemSetting( "GOOGLE_API_KEY" )
+				}
 			}
 		};
 
@@ -185,6 +191,22 @@ component {
 			modelsLocation   : "models",
 			eventAction      : "index"
 		};
+
+		/**
+		 * --------------------------------------------------------------------------
+		 * Email configuration
+		 * --------------------------------------------------------------------------
+		 */
+		email : {
+			default : {
+				server   : getSystemSetting( "SMTP_HOST" ),
+				port     : getSystemSetting( "SMTP_PORT" ),
+				username : getSystemSetting( "SMTP_USERNAME" ),
+				password : getSystemSetting( "SMTP_PASSWORD" ),
+				from     : getSystemSetting( "SMTP_FROM_EMAIL" ),
+				cc       : getSystemSetting( "SMTP_CC_EMAIL" )
+			}
+		}
 	}
 
 	function development(){

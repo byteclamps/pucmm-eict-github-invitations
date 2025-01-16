@@ -21,11 +21,17 @@ component extends="coldbox.system.ioc.config.Binder" {
 				key     : "wireBox"
 			},
 			// DSL Namespace registrations
-			customDSL      : {},
+			customDSL     : {},
 			// Custom Storage Scopes
-			customScopes   : {},
+			customScopes  : {},
 			// Package scan locations
-			scanLocations  : [],
+			scanLocations : [
+				"apis/**",
+				"components/**",
+				"handlers/**",
+				"models/**",
+				"services/**"
+			],
 			// Stop Recursions
 			stopRecursions : [],
 			// Parent Injector to assign to the configured injector, this must be an object reference
@@ -35,6 +41,7 @@ component extends="coldbox.system.ioc.config.Binder" {
 		};
 
 		// Map Bindings below
+		map( "EmailService" ).to( "services.EmailService" );
 	}
 
 }

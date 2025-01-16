@@ -60,6 +60,8 @@ component {
 	 */
 	this.mappings[ "/cbapp" ]   = COLDBOX_APP_ROOT_PATH;
 	this.mappings[ "/coldbox" ] = COLDBOX_APP_ROOT_PATH & "coldbox";
+	this.mappings[ "/logbox" ]  = COLDBOX_APP_ROOT_PATH & "logbox";
+	this.mappings[ "/wirebox" ] = COLDBOX_APP_ROOT_PATH & "wirebox";
 
 	/**
 	 * --------------------------------------------------------------------------

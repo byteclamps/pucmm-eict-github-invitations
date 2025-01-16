@@ -22,3 +22,9 @@ yarn-error.log
 coldbox/**
 testbox/**
 modules/**
+logbox/**
+
+# Custom ignores
+.subjects
+*.p12
+pucmm-eict-github-invitations.json

@@ -21,14 +21,22 @@
         "testbox": "^5.0.0",
         "commandbox-dotenv": "*",
         "commandbox-cfconfig": "*",
-        "commandbox-cfformat": "*"
+        "commandbox-cfformat": "*",
+        "cbdebugger": "^4.3.0+5"
     },
     "installPaths": {
         "coldbox": "coldbox/",
-        "testbox": "testbox/"
+        "testbox": "testbox/",
+        "logbox": "logbox/",
+        "hyper": "modules/hyper/",
+        "cbdebugger": "modules/cbdebugger/",
+        "cbmailservices": "modules/cbmailservices/"
     },
     "dependencies": {
-        "coldbox": "^7.0.0"
+        "coldbox": "^7.0.0",
+        "logbox": "^7.3.0+16",
+        "hyper": "^8.0.0",
+        "cbmailservices": "^2.8.0+1"
     },
     "scripts": {
         "format": "cfformat run config/,handlers/,interceptors/,models/,modules_app/,tests/specs/,*.cfc ./.cfformat.json --overwrite",
