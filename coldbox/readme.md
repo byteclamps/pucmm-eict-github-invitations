@@ -1,4 +1,4 @@
-<p align="center">
+﻿<p align="center">
 	<img src="https://www.ortussolutions.com/__media/coldbox-185-logo.png">
 	<br>
 	<img src="https://www.ortussolutions.com/__media/wirebox-185.png" height="125">
@@ -22,65 +22,18 @@
 
 ----
 
-# ColdBox Elixir Application Template
+Because of God's grace, this project exists. If you don't like this, then don't read it, it's not for you.
 
-This template can be your starting ground for your modern ColdFusion (cfml) web applications.  You must use [CommandBox](http://www.ortussolutions.com/products/commandbox) to track your dependencies and start embedded servers.
+>"Therefore being justified by faith, we have peace with God through our Lord Jesus Christ:
+By whom also we have access by faith into this grace wherein we stand, and rejoice in hope of the glory of God.
+And not only so, but we glory in tribulations also: knowing that tribulation worketh patience;
+And patience, experience; and experience, hope:
+And hope maketh not ashamed; because the love of God is shed abroad in our hearts by the
+Holy Ghost which is given unto us. ." Romans 5:5
 
-This template leverages ColdBox and the (ColdBox Elixir)[https://coldbox-elixir.ortusbooks.com] project for asset management and compilations.  You can place all your static assets in the `resources/assets` folder and Elixir will combine, version, copy, and even babelify your code to their appropriate location in the `includes` folder.
+----
 
-## Quick Installation
-
-Install the template dependencies by running the `install` command:
-
-```bash
-box install
-```
-
-This will setup all the needed dependencies for each application template.  You can then start the embedded server:
-
-```bash
-box server start
-```
-
-Code to your liking and enjoy!
-
-## Dockerfile
-
-We have included a [`build/Dockerfile`](build/Dockerfile) so you can build docker containers from your source code.  We have also added two scripts in your `box.json` so you can build the docker image and run the docker image using our [CommandBox Docker](https://hub.docker.com/r/ortussolutions/commandbox) containers.
-
-```bash
-# Build a docker **container**
-run-script docker:build
-# Run the container
-run-script docker:run
-# Go into the container's bash prompt
-run-script docker:bash
-```
-
-## Docker Compose Stack
-
-We have included a [`build/docker-compose.yaml`](build/docker-compose.yml) stack that can be used to run the application in a container alongside a database.  We have included support for MySQL, PostgreSQL and MSSQL.  We have also included the `run-script docker:stack` command you so you compose the stack up or down.
-
-```bash
-run-script docker:stack up
-run-script docker:stack down
-```
-
-## VSCode Helpers
-
-We have included two vscode helpers for you:
-
-* `.vscode/settings.json` - Includes introspection helpers for ColdBox and TestBox
-* `.vscode/tasks.json` - Tasks to assist in running a Test Bundle and a CommandBox Task
-
-We have included two custom tasks:
-
-* `Run CommandBox Task` - Open a CommandBox task and run it
-* `Run TestBox Bundle` - Open the bundle you want to test and then run it
-
-To run the custom tasks open the command palette and choose `Tasks: Run Build Task` or the shortcut `⇧⌘B`
-
-## Welcome to ColdBox
+# Welcome to ColdBox
 
 ColdBox *Hierarchical* MVC is the de-facto enterprise-level [HMVC](https://en.wikipedia.org/wiki/Hierarchical_model%E2%80%93view%E2%80%93controller) framework for ColdFusion (CFML) developers. It's professionally backed, conventions-based, modular, highly extensible, and productive. Getting started with ColdBox is quick and painless.  ColdBox takes the pain out of development by giving you a standardized methodology for modern ColdFusion (CFML) development with features such as:
 
@@ -97,16 +50,105 @@ ColdBox *Hierarchical* MVC is the de-facto enterprise-level [HMVC](https://en.wi
 * [An extensive eco-system](https://forgebox.io)
 * Much More
 
-## Learning ColdBox
+## LTS Support
 
-ColdBox is the defacto standard for building modern ColdFusion (CFML) applications.  It has the most extensive [documentation](https://coldbox.ortusbooks.com) of all modern web application frameworks.
+For all ColdBox releases, updates are provided for 12 months and security fixes are provided for 2 years after the next major release.
+
+**ColdBox 6.x will receive bug fixes until 2024 and security fixes until 2025.**
+
+| Version | Release | Updates 	| Security Fixes |
+| ------- | ------- | --------- | -------------- |
+| 6.x     | 2022    | 2023      | 2025           |
+| 7.x     | 2023    | 2024      | 2026           |
+| 8.x     | 2024    | 2025      | 2027           |
+| 9.x     | 2025    | 2026      | 2028           |
 
 
-If you don't like reading so much, then you can try our video learning platform: [CFCasts (www.cfcasts.com)](https://www.cfcasts.com)
+## License
 
-## ColdBox Sponsors
+Apache License, Version 2.0.
 
-ColdBox is a professional open-source project and it is completely funded by the [community](https://patreon.com/ortussolutions) and [Ortus Solutions, Corp](https://www.ortussolutions.com).  Ortus Patreons get many benefits like a cfcasts account, a FORGEBOX Pro account and so much more.  If you are interested in becoming a sponsor, please visit our patronage page: [https://patreon.com/ortussolutions](https://patreon.com/ortussolutions)
+>The ColdBox Websites, logo and content have a separate license and they are a separate entity.
+
+## Versioning
+
+ColdBox is maintained under the Semantic Versioning guidelines as much as possible.
+
+Releases will be numbered with the following format:
+
+```html
+<major>.<minor>.<patch>
+```
+
+And constructed with the following guidelines:
+
+* Breaking backward compatibility bumps the major (and resets the minor and patch)
+* New additions without breaking backward compatibility bumps the minor (and resets the patch)
+* Bug fixes and misc changes bumps the patch
+
+## Important Links
+
+### Source Code
+
+* https://github.com/coldbox/coldbox-platform
+
+### Bug Tracking/Agile Boards
+
+* https://ortussolutions.atlassian.net/browse/COLDBOX
+* https://ortussolutions.atlassian.net/browse/CACHEBOX
+* https://ortussolutions.atlassian.net/browse/LOGBOX
+* https://ortussolutions.atlassian.net/browse/WIREBOX
+
+### Documentation
+
+* https://coldbox.ortusbooks.com
+* https://cachebox.ortusbooks.com
+* https://logbox.ortusbooks.com
+* https://wirebox.ortusbooks.com
+
+### Official Site
+
+* https://www.coldbox.org
+* https://www.ortussolutions.com/products/coldbox
+
+## System Requirements
+
+* Lucee 5+
+* Adobe ColdFusion 2018+
+
+## Quick Installation
+
+Please go to our [documentation](https://coldbox.ortusbooks.com) for expanded instructions.
+
+**CommandBox (Recommended)**
+
+We recommend you use [CommandBox](https://www.ortussolutions.com/products/commandbox), our CFML CLI and package manager, to install ColdBox.
+
+**Stable Release**
+
+`box install coldbox`
+
+**Bleeding Edge Release**
+
+`box install coldbox@be`
+
+Bleeding edge releases are updated automatically when code is committed.
+
+## Collaboration
+
+First, read our [contributing](CONTRIBUTING.md) guidelines, then you will need to download [CommandBox](https://www.ortussolutions.com/products/commandbox) so you can install dependencies, run the development server and much more.
+
+Then you need to install some CommandBox modules in order to work with environment variables and CFML engine configuration. Once you fork/clone the repository, startup a CommandBox shell in the root of the project via `box` and then install all of the project development dependencies:
+
+```bash
+install
+```
+
+Create an `.env` file according to the `.env.template` in the root and spice it up for your local database.  Then import the SQL for the database which can be found in `/tests/resources/coolblog.sql`. You can then go ahead and start an embedded server `box server start` and start hacking around.
+
+For running our test suites you will need 2 more steps, so please refer to the [Readme](tests/readme.md) in the tests folder.
+
+----
 
 ### THE DAILY BREAD
 

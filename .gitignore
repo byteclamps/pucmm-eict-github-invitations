@@ -1,24 +1,30 @@
-target/
-pom.xml.tag
-pom.xml.releaseBackup
-pom.xml.versionsBackup
-pom.xml.next
-release.properties
-dependency-reduced-pom.xml
-buildNumber.properties
-.mvn/timing.properties
-# https://github.com/takari/maven-wrapper#usage-without-binary-jar
-.mvn/wrapper/maven-wrapper.jar
+# General Ignores + IDE
+.DS_Store
+settings.xml
+WEB-INF
 
-# Eclipse m2e generated files
-# Eclipse Core
-.project
-# JDT-specific (Eclipse Java Development Tools)
-.classpath
-.idea
+# Engines + Database + CBFS + Secrets
 .env
-*.iml
-HELP.md
+.engine/**
+.cbfs/**
+build/.db/**
+
+# logs + tests
+logs/**
+tests/results/**
+
+# npm
+**/node_modules/*
+npm-debug.log
+yarn-error.log
+
+## Ignored Dependencies
+coldbox/**
+testbox/**
+modules/**
+logbox/**
+
+# Custom ignores
 .subjects
 *.p12
 pucmm-eict-github-invitations.json
