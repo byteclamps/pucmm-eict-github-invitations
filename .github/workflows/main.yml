@@ -1,0 +1,109 @@
+name: Docker & Deployment Workflow
+
+on:
+  push:
+    branches:
+      - master
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      # Checkout the repository
+      - name: Checkout code
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v2
+
+      # Login to Docker Hub
+      - name: Docker Login
+        uses: docker/login-action@v2
+        with:
+          username: ${{ secrets.DOCKER_USERNAME }}
+          password: ${{ secrets.DOCKER_PASSWORD }}
+
+      # Create .env file
+      - name: Create environment variables file (.env)
+        uses: appleboy/ssh-action@v1.0.3
+        with:
+          host: ${{ secrets.SSH_HOST }}
+          username: ${{ secrets.SSH_USERNAME }}
+          password: ${{ secrets.SSH_PASSWORD }}
+          port: ${{ vars.SSH_PORT }}
+          script: |
+            rm -rf .env
+            touch .env
+            echo "# Coldbox environment variables" >> .env
+            echo "APPNAME=${{ vars.APPNAME }}" >> .env
+            echo "ENVIRONMENT=${{ vars.ENVIRONMENT }}" >> .env
+            echo "BOX_SERVER_DEBUG=${{ vars.BOX_SERVER_DEBUG }}" >> .env
+            echo "" >> .env
+            echo "# Github environment variables" >> .env
+            echo "GH_TOKEN=${{ vars.GH_TOKEN }}" >> .env
+            echo "" >> .env
+            echo "# Jsonbin environment variables" >> .env
+            echo "JSONBIN_ACCESS_KEY=${{ secrets.JSONBIN_ACCESS_KEY }}" >> .env
+            echo "JSONBIN_MASTER_KEY=${{ secrets.JSONBIN_MASTER_KEY }}" >> .env
+            echo "JSONBIN_STUDENT_BIN_ID=${{ secrets.JSONBIN_STUDENT_BIN_ID }}" >> .env
+            echo "" >> .env
+            echo "# Email environment variables" >> .env
+            echo "SMTP_HOST=${{ vars.SMTP_HOST }}" >> .env
+            echo "SMTP_PORT=${{ vars.SMTP_PORT }}" >> .env
+            echo "SMTP_USERNAME=${{ secrets.SMTP_USERNAME }}" >> .env
+            echo "SMTP_PASSWORD=${{ secrets.SMTP_PASSWORD }}" >> .env
+            echo "SMTP_FROM_EMAIL=${{ vars.SMTP_FROM_EMAIL }}" >> .env
+            echo "SMTP_CC_EMAIL=${{ vars.SMTP_CC_EMAIL }}" >> .env
+            echo "" >> .env
+            cp .env /opt/pucmm-eict-github-invitations/.env
+
+      # Run command box cli
+      - name: Setup CommandBox
+        uses: Ortus-Solutions/setup-commandbox@v2.0.1
+        with:
+          warmup: true
+
+      - name: Copy files via SCP
+        env:
+          SSH_PORT: ${{ vars.SSH_PORT }}
+          SSH_USERNAME: ${{ secrets.SSH_USERNAME }}
+          SSH_HOST: ${{ secrets.SSH_HOST }}
+          SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
+        run: |
+          # Save the private key to a file
+          echo "$SSH_PRIVATE_KEY" > /tmp/id_rsa
+          chmod 600 /tmp/id_rsa
+          
+          # Add the key to the SSH agent
+          eval "$(ssh-agent -s)"
+          ssh-add /tmp/id_rsa
+
+          # Run the SCP command
+          scp -v -o StrictHostKeyChecking=no -P $SSH_PORT -r ./build/docker-compose.yml $SSH_USERNAME@$SSH_HOST:/opt/pucmm-eict-github-invitations/docker-compose.yml
+          scp -v -o StrictHostKeyChecking=no -P $SSH_PORT -r ./build/Dockerfile $SSH_USERNAME@$SSH_HOST:/opt/pucmm-eict-github-invitations/Dockerfile
+          scp -v -o StrictHostKeyChecking=no -P $SSH_PORT -r $SSH_USERNAME@$SSH_HOST:/opt/pucmm-eict-github-invitations/.env .env
+
+      - name: Prepare docker
+        run: |
+          VERSION=$(box jq box.json version)
+          box install --production
+          box run-script docker:build:local guhex/pucmm-eict-github-invitations.ghencon.com:latest guhex/pucmm-eict-github-invitations.ghencon.com:$VERSION
+          box run-script docker:publish latest
+          box run-script docker:publish $VERSION
+
+      - name: Deploy website
+        uses: appleboy/ssh-action@v1.0.3
+        with:
+          host: ${{ secrets.SSH_HOST }}
+          username: ${{ secrets.SSH_USERNAME }}
+          password: ${{ secrets.SSH_PASSWORD }}
+          port: ${{ vars.SSH_PORT }}
+          script: |
+            cp /etc/nginx/ssl/pucmm-eict-github-invitations.ghencon.com_2048/private.key /opt/pucmm-eict-github-invitations/pucmm-eict-github-invitations.key
+            cp /etc/nginx/ssl/pucmm-eict-github-invitations.ghencon.com_2048/fullchain.cer /opt/pucmm-eict-github-invitations/pucmm-eict-github-invitations.cer
+            docker pull guhex/pucmm-eict-github-invitations.ghencon.com:latest
+            docker-compose -f /opt/pucmm-eict-github-invitations/docker-compose.yml down -v
+            docker-compose -f /opt/pucmm-eict-github-invitations/docker-compose.yml up --build --force-recreate -d

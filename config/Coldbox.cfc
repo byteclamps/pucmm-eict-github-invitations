@@ -72,15 +72,17 @@ component {
 		settings = {
 			isDebug : controller.getSetting( name = "ENVIRONMENT", defaultValue = "production" ) == "development",
 			isLocal : true,
+			coldbox : {
+				version : boxConfig.version
+			},
 			features    : { sendEmailNotification : true },
 			rateLimit   : 3,
 			emails      : [ "gustavojoseh@gmail.com" ],
 			sendToEmail : "gustavojoseh@gmail.com",
 			github : {
-				token : getSystemSetting( "GITHUB_TOKEN" ),
+				token : getSystemSetting( "GH_TOKEN" ),
 				org   : "pucmm-eict"
 			},
-			google  : { api : { key : getSystemSetting( "GOOGLE_API_KEY" ) } },
 			jsonbin : {
 				accessKey    : getSystemSetting( "JSONBIN_ACCESS_KEY" ),
 				studentBinId : getSystemSetting( "JSONBIN_STUDENT_BIN_ID" )
