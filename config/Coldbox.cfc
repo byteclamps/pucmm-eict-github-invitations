@@ -82,7 +82,7 @@ component {
 				org   : "pucmm-eict"
 			},
 			jsonbin : {
-				accessKey    : getSystemSetting( "JSONBIN_ACCESS_KEY" ),
+				accessKey    : "$2a$10$" & getSystemSetting( "JSONBIN_ACCESS_KEY" ),
 				studentBinId : getSystemSetting( "JSONBIN_STUDENT_BIN_ID" )
 			},
 			/**
