@@ -46,8 +46,8 @@ jobs:
             echo "GH_TOKEN=${{ secrets.GH_TOKEN }}" >> .env
             echo "" >> .env
             echo "# Jsonbin environment variables" >> .env
-            echo "JSONBIN_ACCESS_KEY=${{ secrets.JSONBIN_ACCESS_KEY }}" >> .env
-            echo "JSONBIN_MASTER_KEY=${{ secrets.JSONBIN_MASTER_KEY }}" >> .env
+            echo "JSONBIN_ACCESS_KEY=\${{ secrets.JSONBIN_ACCESS_KEY }}" >> .env
+            echo "JSONBIN_MASTER_KEY=\${{ secrets.JSONBIN_MASTER_KEY }}" >> .env
             echo "JSONBIN_STUDENT_BIN_ID=${{ secrets.JSONBIN_STUDENT_BIN_ID }}" >> .env
             echo "" >> .env
             echo "# Email environment variables" >> .env
