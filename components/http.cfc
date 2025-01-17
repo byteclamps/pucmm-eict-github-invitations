@@ -51,10 +51,8 @@ component {
 
 		local.result = local.request.send();
 
-		if (log.canDebug()) {
-			if (structKeyExists(local.result, "data")) {
-				log.debug("Response: ", local.result.data);
-			}
+		if (log.canDebug() eq true) {
+			log.debug("Response: #serializeJSON(local.result.getMemento())#");
 		}
 
 		if ( local.result.getStatusCode() >= 200 && local.result.getStatusCode() <= 299 ) {

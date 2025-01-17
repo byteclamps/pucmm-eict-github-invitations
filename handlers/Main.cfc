@@ -12,7 +12,6 @@ component extends="coldbox.system.EventHandler" {
 	 */
 	function index( event, rc, prc ){
 		rc.settings = coldbox.getConfigSettings();
-		rc.version = rc.settings.coldbox.version;
 		rc.subjects = variables.jsonbin.readBin( rc.settings.jsonbin.studentBinId );
 
 		log.info( "Loading index (Main view)..." );

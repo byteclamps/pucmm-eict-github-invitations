@@ -70,11 +70,9 @@ component {
 		 * --------------------------------------------------------------------------
 		 */
 		settings = {
+			boxConfig : boxConfig,
 			isDebug : controller.getSetting( name = "ENVIRONMENT", defaultValue = "production" ) == "development",
 			isLocal : true,
-			coldbox : {
-				version : boxConfig.version
-			},
 			features    : { sendEmailNotification : true },
 			rateLimit   : 3,
 			emails      : [ "gustavojoseh@gmail.com" ],
