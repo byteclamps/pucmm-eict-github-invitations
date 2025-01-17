@@ -22,8 +22,9 @@
     <meta content="width=device-width, initial-scale=1.0" name="viewport">
     <meta content="ie=edge" http-equiv="X-UA-Compatible">
     <title>Pucmm EICT Github Invitations</title>
-	<meta name="description" content="Github invitations software application">
+	  <meta name="description" content="Github invitations software application">
     <meta name="author" content="Gustavo Henriquez">
+    <link rel="icon" href="#rc.settings.host#/favicon.ico" type="image/x-icon"/>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap" rel="stylesheet">
@@ -36,6 +37,6 @@
 	#view()#
 </body>
 <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
-<script src="/includes/js/index.js"></script>
+<script src="#rc.settings.host#/includes/js/index.js"></script>
 </html>
 </cfoutput>

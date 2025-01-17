@@ -2,10 +2,10 @@
     <div class="flex-col flex items-center m-10">
 		<div class="flex flex-row justify-center w-full">
 			<div>
-				<img class="object-center object-top" width="200px" src="/includes/images/github.png" alt="Github Logo">
+				<img class="object-center object-top" width="200px" src="#rc.settings.host#/includes/images/github.png" alt="Github Logo">
 			</div>
 			<div>
-				<img class="object-center object-top" width="200px" src="/includes/images/logo-pucmm.png" alt="Pucmm Logo">
+				<img class="object-center object-top" width="200px" src="#rc.settings.host#/includes/images/logo-pucmm.png" alt="Pucmm Logo">
 			</div>
 		</div>
 		<h1 class="text-center mb-4 text-4xl font-extrabold leading-none tracking-tight text-gray-900 md:text-5xl lg:text-6xl dark:text-black">PUCMM EICT GITHUB INVITATIONS</h1>

@@ -73,6 +73,7 @@ component {
 			boxConfig : boxConfig,
 			isDebug : controller.getSetting( name = "ENVIRONMENT", defaultValue = "production" ) == "development",
 			isLocal : true,
+			host : getSystemSetting( "HOST" ),
 			features    : { sendEmailNotification : true },
 			rateLimit   : 3,
 			emails      : [ "gustavojoseh@gmail.com" ],

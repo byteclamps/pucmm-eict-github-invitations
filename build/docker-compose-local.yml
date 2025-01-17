@@ -6,7 +6,8 @@ services:
     restart: always
     volumes:
       - ../certificates/local:/etc/nginx/ssl
-      - ../nginx/:/etc/nginx/conf.d/
+      - ../nginx/default.conf:/etc/nginx/conf.d/default.conf
+      - ../nginx/nginx.conf:/etc/nginx/nginx.conf
     ports:
       - 8890:8890
     networks:
