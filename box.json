@@ -42,6 +42,8 @@
         "format": "cfformat run config/,handlers/,interceptors/,models/,modules_app/,tests/specs/,*.cfc ./.cfformat.json --overwrite",
         "format:check": "cfformat check config/,handlers/,interceptors/,models/,modules_app/,tests/specs/,*.cfc ./.cfformat.json",
         "format:watch": "cfformat watch path='config/,handlers/,interceptors/,models/,modules_app/,tests/specs/,*.cfc' settingsPath='.cfformat.json'",
+        "docker:build:prod": "!docker build --no-cache -t ${1} -t ${2} -f ./build/Dockerfile .",
+        "docker:publish": "!docker push guhex/uroteamrd.com:${1}",
         "docker-compose:build:local": "!docker-compose --file build/docker-compose-local.yml --env-file .env build --no-cache",
         "docker-compose:up:local": "!docker-compose --file build/docker-compose-local.yml --env-file .env up -d",
         "docker-compose:down:local": "!docker-compose --file build/docker-compose-local.yml --env-file .env down"
