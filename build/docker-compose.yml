@@ -10,7 +10,7 @@ services:
     env_file:
       - .env
     ports:
-      - 8889:8443
+      - 8890:8443
     networks:
       - "contabo"
 
