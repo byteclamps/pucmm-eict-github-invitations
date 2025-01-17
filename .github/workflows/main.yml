@@ -41,6 +41,7 @@ jobs:
             echo "APPNAME=${{ vars.APPNAME }}" >> .env
             echo "ENVIRONMENT=${{ vars.ENVIRONMENT }}" >> .env
             echo "BOX_SERVER_DEBUG=${{ vars.BOX_SERVER_DEBUG }}" >> .env
+            echo "HOST=${{ vars.HOST }}" >> .env
             echo "" >> .env
             echo "# Github environment variables" >> .env
             echo "GH_TOKEN=${{ secrets.GH_TOKEN }}" >> .env
