@@ -4,6 +4,7 @@ component extends="coldbox.system.EventHandler" {
 	property name="github"       inject="apis.external.github";
 	property name="jsonbin"      inject="apis.external.jsonbin";
 	property name="emailService" inject="services.EmailService";
+	property name="githubUser"       inject="GithubUser";
 
 	this.allowedMethods = { index : "GET", check : "POST" };
 
@@ -18,11 +19,11 @@ component extends="coldbox.system.EventHandler" {
 
 		if ( rc.settings.isLocal eq true ) {
 			rc.subject    = "st-icc-354";
-			rc.githubUser = "byteclamps";
+			rc.username = "byteclamps";
 			rc.email      = "20130216@ce.pucmm.edu.do";
 		} else {
 			rc.subject    = "";
-			rc.githubUser = "";
+			rc.username = "";
 			rc.email      = "";
 		}
 
@@ -31,72 +32,79 @@ component extends="coldbox.system.EventHandler" {
 
 	function check( event, rc, prc ){
 		settings    = coldbox.getConfigSettings();
-		rc.subjects = variables.jsonbin.readBin( settings.jsonbin.studentBinId );
 
-		local.githubUser = {
-			"email"    : rc[ "email" ],
-			"username" : rc[ "githubUser" ],
-			"subject"  : rc[ "subject" ]
-		};
-
-		// If the subject is not valid
 		try {
-			local.subject = rc.subjects[ local.githubUser[ "subject" ] ];
-		} catch ( any ex ) {
-			returnFlashResponse(
-				true,
-				"Ha habido un problema a la de validar la petición. Si el problema persiste, comunicarse con el administrador del sistema."
-			);
-		}
+			var user  = githubUser.init( rc ).fromClient();
+			rc.subjects = variables.jsonbin.readBin( settings.jsonbin.studentBinId );
 
-		log.info( "Making post request into check..." );
+			// If the subject is not valid
+			try {
+				local.subject = rc.subjects[ user.getSubject() ];
+			} catch ( any ex ) {
+				returnFlashResponse(
+					true,
+					"Ha habido un problema a la de validar la petición. Si el problema persiste, comunicarse con el administrador del sistema."
+				);
+			}
 
-		if ( arrayFind( local.subject.students, local.githubUser[ "email" ] ) eq 0 ) {
-			log.info( "Student with email #local.githubUser[ "email" ]# is not valid." );
+			log.info( "Making post request into check..." );
 
-			returnFlashResponse(
-				true,
-				"El correo proporcionado no es valido o no esta registrado para la materia."
-			);
-		}
+			if ( arrayFind( local.subject.students, user.getEmail() ) eq 0 ) {
+				log.info( "Student with email #user.getEmail()# is not valid." );
 
-		if (
-			github.memberExists(
+				returnFlashResponse(
+					true,
+					"El correo proporcionado no es valido o no esta registrado para la materia."
+				);
+			}
+
+			if (
+				github.memberExists(
+					settings.github.org,
+					local.subject[ "github-team" ],
+					user.getUsername()
+				) eq true
+			) {
+				log.info( "Member #user.getUsername()# already exists in the team of #local.subject.name#..." );
+
+				returnFlashResponse(
+					true,
+					"Ya estás registrado/a en la materia #local.subject.name#. No tiene que hacer mas nada."
+				);
+			}
+
+			log.info( "Github user #user.getUsername()# does not exists in the team #local.subject[ "github-team" ]#, proceeding to add it..." );
+
+			github.addOrUpdateMember(
 				settings.github.org,
 				local.subject[ "github-team" ],
-				local.githubUser[ "username" ]
-			) eq true
-		) {
-			log.info( "Member #local.githubUser[ "username" ]# already exists in the team of #local.subject.name#..." );
-
-			returnFlashResponse(
-				true,
-				"Ya estás registrado/a en la materia #local.subject.name#. No tiene que hacer mas nada."
+				user.getUsername()
 			);
-		}
 
-		log.info( "Github user #local.githubUser[ "username" ]# does not exists in the team #local.subject[ "github-team" ]#, proceeding to add it..." );
+			emailService.send(
+				toEmail  = user.getEmail(),
+				subject  = "[PUCMM EICT GITHUB INVITATIONS] A new user has been added to the team #local.subject[ "github-team" ]# (#user.getUsername()#).",
+				view     = "index",
+				viewArgs = {
+					githubOrg       : settings.github.org,
+					githubTeam      : local.subject[ "github-team" ],
+					subject         : local.subject.name,
+					username  : user.getUsername(),
+					email           : user.getEmail()
+				}
+			);
 
-		github.addOrUpdateMember(
-			settings.github.org,
-			local.subject[ "github-team" ],
-			local.githubUser[ "username" ]
-		);
+			returnFlashResponse( false, "La invitacion ha sido enviada. Favor revisar el correo electrónico enviado." );
+		} catch (ValidationException ex) {
+			var errors = deserializeJSON(ex.extendedInfo);
+			var message = "";
 
-		emailService.send(
-			toEmail  = local.githubUser[ "email" ],
-			subject  = "[PUCMM EICT GITHUB INVITATIONS] A new user has been added to the team #local.subject[ "github-team" ]# (#local.githubUser[ "username" ]#).",
-			view     = "index",
-			viewArgs = {
-				githubOrg       : settings.github.org,
-				githubTeam      : local.subject[ "github-team" ],
-				subject         : local.subject.name,
-				githubUsername  : local.githubUser[ "username" ],
-				email           : local.githubUser[ "email" ]
+			for (key in errors) {
+				message = message & arrayToList(arrayMap(errors[key], (item) => item.message & "<br>"));
 			}
-		);
 
-		returnFlashResponse( false, "La invitacion ha sido enviada. Favor revisar el correo electrónico enviado." );
+			returnFlashResponse( true, message );
+		}
 	}
 
 	private void function returnFlashResponse( required boolean isError, required string message ){

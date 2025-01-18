@@ -1,6 +1,6 @@
 {
     "name": "pucmm-eict-github-invitations",
-    "version": "1.0.1",
+    "version": "1.0.2",
     "author": "Gustavo Henriquez",
     "location": "private",
     "slug": "",
@@ -30,13 +30,15 @@
         "logbox": "logbox/",
         "hyper": "modules/hyper/",
         "cbdebugger": "modules/cbdebugger/",
-        "cbmailservices": "modules/cbmailservices/"
+        "cbmailservices": "modules/cbmailservices/",
+        "cbvalidation": "modules/cbvalidation/"
     },
     "dependencies": {
         "coldbox": "^7.0.0",
         "logbox": "^7.3.0+16",
         "hyper": "^8.0.0",
-        "cbmailservices": "^2.8.0+1"
+        "cbmailservices": "^2.8.0+1",
+        "cbvalidation": "^4.4.0+26"
     },
     "scripts": {
         "format": "cfformat run config/,handlers/,interceptors/,models/,modules_app/,tests/specs/,*.cfc ./.cfformat.json --overwrite",

@@ -20,7 +20,7 @@
   <br>
   <div>Student information below:</div>
   <div><b>Subject:</b> @subject@</div>
-  <div><b>GitHub Username:</b> <a href="https://github.com/@githubUsername@">@githubUsername@</a></div>
+  <div><b>GitHub Username:</b> <a href="https://github.com/@username@">@username@</a></div>
   <div><b>Email:</b> @email@</div>
   <br>
   <div>Please follow up on this user in the next few days to update repository accordingly.</div>
