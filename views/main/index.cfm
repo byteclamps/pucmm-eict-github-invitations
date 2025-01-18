@@ -10,7 +10,7 @@
 		</div>
 		<h1 class="text-center mb-4 text-4xl font-extrabold leading-none tracking-tight text-gray-900 md:text-5xl lg:text-6xl dark:text-black">PUCMM EICT GITHUB INVITATIONS</h1>
 		<p class="text-center mb-6 text-lg font-normal text-gray-500 lg:text-xl sm:px-16 xl:px-48 dark:text-gray-600">Application for self-inviting into github subject's team.</p>
-		<form class="shadow-md rounded px-8 pt-6 pb-8 mb-4 m-10 w-1/2 bg-white" id="github-form" method="post" action="#rc.settings.host#/Main/check">
+		<form class="shadow-md rounded px-8 pt-6 pb-8 mb-4 m-10 w-1/2 bg-white" id="github-form" method="post" action="/Main/check">
 			<div class="mb-4">
 				<label class="block text-gray-700 text-sm font-bold mb-2" for="subject">
 					Subject
