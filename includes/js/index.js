@@ -29,4 +29,26 @@ $(document).ready(() => {
         $(this).prop("disabled", true);
         $(this).text("Enviando solicitud...");
     });
+
+    $("#subject").change(function () {
+        let currentValue = this.value;
+
+        if (currentValue !== "") {
+            $(".download-guide-link").removeClass("hidden");
+        } else {
+            $(".download-guide-link").addClass("hidden");
+        }
+
+        if ((currentValue in guides) && guides[currentValue]['guide-link'].length === 0) {
+            $(".download-guide-link").addClass("hidden");
+        }
+    });
+
+    $(".download-guide-link").on("click", function() {
+        let subjectCode = $("#subject").val();
+
+        window.open(guides[subjectCode]['guide-link']);
+    });
+
+    $("#subject").trigger("change");
 });

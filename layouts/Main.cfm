@@ -31,7 +31,7 @@
     <script src="https://cdn.tailwindcss.com"></script>
 
 	<!---Base URL --->
-	<base href="#event.getHTMLBaseURL()#" />
+	<base href="#rc.settings.host#" />
 </head>
 <body class="bg-gray-100">
 	#view()#

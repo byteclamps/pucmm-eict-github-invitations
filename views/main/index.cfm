@@ -21,6 +21,7 @@
 						<option value="#key#" <cfif key eq rc.subject>selected="selected"</cfif>>#rc.subjects[key]["name"]#</option>
                     </cfloop>
 				</select>
+				<a href="##" class="hidden font-medium text-blue-600 dark:text-blue-500 hover:underline download-guide-link">Descargar gu&iacute;a</a>
 			</div>
 			<div class="mb-4">
 				<label class="block text-gray-700 text-sm font-bold mb-2" for="username">
@@ -65,4 +66,7 @@
 		<hr class="my-6 border-gray-200 sm:mx-auto dark:border-gray-700 lg:my-8" />
 		<span class="block text-sm text-gray-500 sm:text-center dark:text-gray-400">© #now().year()# <a href="https://ghencon.com/" class="hover:underline">Ghencon™</a>. All Rights Reserved. Version #rc.settings.boxConfig.version#</span>
 	</div>
+	<script>
+		var guides = #rc.guides#;
+	</script>
 </cfoutput>

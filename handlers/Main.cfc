@@ -14,6 +14,7 @@ component extends="coldbox.system.EventHandler" {
 	function index( event, rc, prc ){
 		rc.settings = coldbox.getConfigSettings();
 		rc.subjects = variables.jsonbin.readBin( rc.settings.jsonbin.studentBinId );
+		rc.guides = serializeJSON(collectionMap(rc.subjects, function (item) { return { "guide-link" : rc.subjects[item]["guide-link"] } }));
 
 		log.info( "Loading index (Main view)..." );
 
