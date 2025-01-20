@@ -58,6 +58,6 @@
     },
     "ModCFML":{
         "enable":true,
-        "sharedKey":"my-secret"
+        "sharedKey":"${MOD_CFML_SHARED_KEY}"
     }
 }

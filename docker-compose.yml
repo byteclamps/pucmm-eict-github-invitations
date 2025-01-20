@@ -1,21 +1,19 @@
-name: "pucmm-eict-github-invitations-docker-compose"
+version: "3"
 services:
   pucmm-eict-github-invitations:
     build: 
-      context: ../
-      dockerfile: build/Dockerfile
+      context: .
+      dockerfile: Dockerfile
     container_name: pucmm-eict-github-invitations
     restart: "always"
     hostname: pucmm-eict-github-invitations
     env_file:
-      - ../.env
+      - .env
     ports:
-      - "${SERVER_PORT}:443"
-    volumes:
-      - "../:/app"
+      - ${SERVER_PORT}:8890
     networks:
-      - "local"
+      - "contabo"
 
 networks:
-  "local":
+  contabo:
     external: true

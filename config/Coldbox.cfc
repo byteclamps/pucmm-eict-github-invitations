@@ -70,15 +70,15 @@ component {
 		 * --------------------------------------------------------------------------
 		 */
 		settings = {
-			boxConfig : boxConfig,
-			isDebug : controller.getSetting( name = "ENVIRONMENT", defaultValue = "production" ) == "development",
-			isLocal : true,
-			host : getSystemSetting( "HOST" ),
+			boxConfig   : boxConfig,
+			isDebug     : controller.getSetting( name = "ENVIRONMENT", defaultValue = "production" ) == "development",
+			isLocal     : true,
+			host        : getSystemSetting( "HOST" ),
 			features    : { sendEmailNotification : true },
 			rateLimit   : 3,
 			emails      : [ "gustavojoseh@gmail.com" ],
 			sendToEmail : "gustavojoseh@gmail.com",
-			github : {
+			github      : {
 				token : getSystemSetting( "GH_TOKEN" ),
 				org   : "pucmm-eict"
 			},

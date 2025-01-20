@@ -4,7 +4,7 @@ component extends="coldbox.system.EventHandler" {
 	property name="github"       inject="apis.external.github";
 	property name="jsonbin"      inject="apis.external.jsonbin";
 	property name="emailService" inject="services.EmailService";
-	property name="githubUser"       inject="GithubUser";
+	property name="githubUser"   inject="GithubUser";
 
 	this.allowedMethods = { index : "GET", check : "POST" };
 
@@ -14,28 +14,32 @@ component extends="coldbox.system.EventHandler" {
 	function index( event, rc, prc ){
 		rc.settings = coldbox.getConfigSettings();
 		rc.subjects = variables.jsonbin.readBin( rc.settings.jsonbin.studentBinId );
-		rc.guides = serializeJSON(collectionMap(rc.subjects, function (item) { return { "guide-link" : rc.subjects[item]["guide-link"] } }));
+		rc.guides   = serializeJSON(
+			collectionMap( rc.subjects, function( item ){
+				return { "guide-link" : rc.subjects[ item ][ "guide-link" ] }
+			} )
+		);
 
 		log.info( "Loading index (Main view)..." );
 
 		if ( rc.settings.isLocal eq true ) {
-			rc.subject    = "st-icc-354";
+			rc.subject  = "st-icc-354";
 			rc.username = "byteclamps";
-			rc.email      = "20130216@ce.pucmm.edu.do";
+			rc.email    = "20130216@ce.pucmm.edu.do";
 		} else {
-			rc.subject    = "";
+			rc.subject  = "";
 			rc.username = "";
-			rc.email      = "";
+			rc.email    = "";
 		}
 
 		event.setView( "main/index" );
 	}
 
 	function check( event, rc, prc ){
-		settings    = coldbox.getConfigSettings();
+		settings = coldbox.getConfigSettings();
 
 		try {
-			var user  = githubUser.init( rc ).fromClient();
+			var user    = githubUser.init( rc ).fromClient();
 			rc.subjects = variables.jsonbin.readBin( settings.jsonbin.studentBinId );
 
 			// If the subject is not valid
@@ -87,21 +91,24 @@ component extends="coldbox.system.EventHandler" {
 				subject  = "[PUCMM EICT GITHUB INVITATIONS] A new user has been added to the team #local.subject[ "github-team" ]# (#user.getUsername()#).",
 				view     = "index",
 				viewArgs = {
-					githubOrg       : settings.github.org,
-					githubTeam      : local.subject[ "github-team" ],
-					subject         : local.subject.name,
-					username  : user.getUsername(),
-					email           : user.getEmail()
+					githubOrg  : settings.github.org,
+					githubTeam : local.subject[ "github-team" ],
+					subject    : local.subject.name,
+					username   : user.getUsername(),
+					email      : user.getEmail()
 				}
 			);
 
-			returnFlashResponse( false, "La invitacion ha sido enviada. Favor revisar el correo electrónico enviado." );
-		} catch (ValidationException ex) {
-			var errors = deserializeJSON(ex.extendedInfo);
+			returnFlashResponse(
+				false,
+				"La invitacion ha sido enviada. Favor revisar el correo electrónico enviado."
+			);
+		} catch ( ValidationException ex ) {
+			var errors  = deserializeJSON( ex.extendedInfo );
 			var message = "";
 
-			for (key in errors) {
-				message = message & arrayToList(arrayMap(errors[key], (item) => item.message & "<br>"));
+			for ( key in errors ) {
+				message = message & arrayToList( arrayMap( errors[ key ], ( item ) => item.message & "<br>" ) );
 			}
 
 			returnFlashResponse( true, message );

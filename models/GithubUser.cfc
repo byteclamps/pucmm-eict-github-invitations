@@ -4,15 +4,15 @@
 component accessors="true" extends="BaseModel" {
 
 	// Properties
-	property name="subject" type="string";
+	property name="subject"  type="string";
 	property name="username" type="string";
-	property name="email" type="string";	
+	property name="email"    type="string";
 
 	// Rc properties
 	this.rcStruct = {
-		"subject"          : "subject",
-		"username"     : "username",
-		"email"         : "email",
+		"subject"              : "subject",
+		"username"             : "username",
+		"email"                : "email",
 		"g-recaptcha-response" : "gcaptchaResponse"
 	};
 
@@ -34,38 +34,33 @@ component accessors="true" extends="BaseModel" {
 			size            : "4..64",
 			sizeMessage     : "El correo electrónico debe de contener entre {min} y {max} caracteres",
 			type            : "email"
-		},
+		}
 	};
 
 	// Constraint Profiles
-	this.constraintProfiles = {
-		"update" : {}
-	};
+	this.constraintProfiles = { "update" : {} };
 
 	// Population Control
-	this.population = {
-		include : [],
-		exclude : []
-	};
+	this.population = { include : [], exclude : [] };
 
 	// Mementifier
 	this.memento = {
 		// An array of the properties/relationships to include by default
-		defaultIncludes = [ "*" ],
+		defaultIncludes : [ "*" ],
 		// An array of properties/relationships to exclude by default
-		defaultExcludes = [],
+		defaultExcludes : [],
 		// An array of properties/relationships to NEVER include
-		neverInclude = [],
+		neverInclude    : [],
 		// A struct of defaults for properties/relationships if they are null
-		defaults = {},
+		defaults        : {},
 		// A struct of mapping functions for properties/relationships that can transform them
-		mappers = {}
+		mappers         : {}
 	};
 
 	/**
 	 * Constructor
 	 */
-	GithubUser function init(any rc){
+	GithubUser function init( any rc ){
 		if ( isNull( arguments.rc ) == false ) {
 			mapFromRc( arguments.rc );
 		}

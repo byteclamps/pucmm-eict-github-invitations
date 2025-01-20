@@ -2,6 +2,7 @@
  * Base model component class that maps from the request collection (RC)
  */
 component accessors="true" presistent="true" {
+
 	// Log property
 	property name="log" inject="logbox";
 
@@ -20,7 +21,7 @@ component accessors="true" presistent="true" {
 		}
 
 		for ( key in rc ) {
-			if ( (key != "event" and key != "fieldnames") && structKeyExists( this.rcStruct, key ) == false ) {
+			if ( ( key != "event" and key != "fieldnames" ) && structKeyExists( this.rcStruct, key ) == false ) {
 				throw(
 					type         = "ValidationException",
 					message      = "El formulario provisionado no contiene las informaciones correcta. Favor refrescar la página e intentar de nuevo.",

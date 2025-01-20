@@ -41,7 +41,12 @@ jobs:
             echo "APPNAME=${{ vars.APPNAME }}" >> .env
             echo "ENVIRONMENT=${{ vars.ENVIRONMENT }}" >> .env
             echo "BOX_SERVER_DEBUG=${{ vars.BOX_SERVER_DEBUG }}" >> .env
+            echo "SERVER_PORT=${{ vars.SERVER_PORT }}" >> .env
             echo "HOST=${{ vars.HOST }}" >> .env
+            echo "MOD_CFML_SHARED_KEY=${{ secrets.MOD_CFML_SHARED_KEY }}" >> .env
+            echo "" >> .env
+            echo "# Nginx environment variables" >> .env
+            echo "SSL_BASE_NAME=${{ vars.SSL_BASE_NAME }}" >> .env
             echo "" >> .env
             echo "# Github environment variables" >> .env
             echo "GH_TOKEN=${{ secrets.GH_TOKEN }}" >> .env
@@ -83,8 +88,8 @@ jobs:
           ssh-add /tmp/id_rsa
 
           # Run the SCP command
-          scp -v -o StrictHostKeyChecking=no -P $SSH_PORT -r ./build/docker-compose.yml $SSH_USERNAME@$SSH_HOST:/opt/pucmm-eict-github-invitations/docker-compose.yml
-          scp -v -o StrictHostKeyChecking=no -P $SSH_PORT -r ./build/Dockerfile $SSH_USERNAME@$SSH_HOST:/opt/pucmm-eict-github-invitations/Dockerfile
+          scp -v -o StrictHostKeyChecking=no -P $SSH_PORT -r ./docker-compose.yml $SSH_USERNAME@$SSH_HOST:/opt/pucmm-eict-github-invitations/docker-compose.yml
+          scp -v -o StrictHostKeyChecking=no -P $SSH_PORT -r ./Dockerfile $SSH_USERNAME@$SSH_HOST:/opt/pucmm-eict-github-invitations/Dockerfile
           scp -v -o StrictHostKeyChecking=no -P $SSH_PORT -r $SSH_USERNAME@$SSH_HOST:/opt/pucmm-eict-github-invitations/.env .env
 
       - name: Prepare docker
