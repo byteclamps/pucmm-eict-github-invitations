@@ -45,4 +45,7 @@ WORKDIR /app
 ENV HEALTHCHECK_URI="https://127.0.0.1:8890"
 HEALTHCHECK --interval=20s --timeout=30s --retries=15 CMD curl --insecure --fail ${HEALTHCHECK_URI} || exit 1
 
+RUN chown 777 /usr/local/bin/startup.sh
+RUN chmod +x /usr/local/bin/startup.sh
+
 CMD /usr/local/bin/startup.sh
