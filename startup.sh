@@ -6,7 +6,7 @@ OUTPUT_PATH="/etc/nginx/conf.d/default.conf"
 
 # Perform environment variable substitution
 echo "Substituting environment variables into nginx.conf..."
-envsubst '${MOD_CFML_SHARED_KEY},${SSL_BASE_NAME}' < "$TEMPLATE_PATH" > "$OUTPUT_PATH"
+envsubst '${MOD_CFML_SHARED_KEY},${SSL_BASE_NAME},${NGINX_LOG_LEVEL}' < "$TEMPLATE_PATH" > "$OUTPUT_PATH"
 
 # Validate the generated configuration (optional)
 nginx -t || exit 1

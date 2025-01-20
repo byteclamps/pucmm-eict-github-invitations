@@ -47,6 +47,7 @@ jobs:
             echo "" >> .env
             echo "# Nginx environment variables" >> .env
             echo "SSL_BASE_NAME=${{ vars.SSL_BASE_NAME }}" >> .env
+            echo "NGINX_LOG_LEVEL=${{ vars.NGINX_LOG_LEVEL }}" >> .env
             echo "" >> .env
             echo "# Github environment variables" >> .env
             echo "GH_TOKEN=${{ secrets.GH_TOKEN }}" >> .env
